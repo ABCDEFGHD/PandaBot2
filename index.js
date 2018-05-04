@@ -12,7 +12,7 @@ bot.on('ready', () => {
     console.log("Bot Prêt !");
 });
 
-bot.login('NDM0MzQ4Nzg1ODg0MzMyMDMz.DcXhTQ.Peji3ZRr6PfnpVi1lCbBRN4FcEk')
+bot.login('process.env.TOKEN')
 
 bot.on('message', message => {
     if (message.content.startsWith("test")){
