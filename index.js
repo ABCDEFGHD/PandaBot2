@@ -12,7 +12,7 @@ bot.on('ready', () => {
     console.log("Bot Prêt !");
 });
 
-bot.login(process.env.TOKEN)
+bot.login('NDQxOTc0OTQ3NjQwOTAxNjQz.Dc4E8w.u2MgSt_wOuYSed7OMO243nHSS9k')
 
 bot.on('message', message => {
     if (message.content.startsWith("test")){
@@ -143,15 +143,15 @@ bot.on('message', message => {
         bot.channels.findAll('name', 'annonce').map(channel => channel.send(aall))
     }
 
-    if (message.channel.type === "dm") {
-        clbot.write(message.content, (response) => {
-          message.channel.startTyping();
-          setTimeout(() => {
-            message.channel.send(response.output).catch(console.error);
-            message.channel.stopTyping();
-          }, Math.random() * (1 - 3) + 1 * 1000);
-        });
-    }
+    //if (message.channel.type === "dm") {
+        //clbot.write(message.content, (response) => {
+          //message.channel.startTyping();
+          //setTimeout(() => {
+            //message.channel.send(response.output).catch(console.error);
+            //message.channel.stopTyping();
+          //}, Math.random() * (1 - 3) + 1 * 1000);
+        //});
+    //}
 });
 
 function random(min, max) {
