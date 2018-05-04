@@ -25,7 +25,7 @@ bot.on('message', message => {
             .setColor('#E81414')
             .addField("Prefix", "§")
             .addField("Commandes du bot !", "- help : Affiche les commandes du bot \n- uinfos : Montre les infos de la personne \n- ic : InterChat (chat entre les serveurs qui ont le channel interchat)")
-            .addField("Fun", "- ask : Poser une question (réponse par oui ou non) \n- avatar : Montre l'avatar de la personne \n- say : Fait parler le bot (perm admin requise)")
+            .addField("Fun", "- ask : Poser une question (réponse par oui ou non) \n- avatar : Montre l'avatar de la personne \n- say : Fait parler le bot (perm admin requise) \n- hug : Faire un câlin à quelqu'un")
             .setFooter("Bot crée par 🐼CΛLLMΣパンダ🐼#9139")
         message.channel.sendEmbed(help_embed);
         console.log("Commande : help");
