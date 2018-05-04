@@ -112,7 +112,7 @@ bot.on('message', message => {
         .setThumbnail(User.user.displayAvatarURL);
         message.channel.sendEmbed(uinfoEmbed)
         if (!message.guild.channels.find("name", "modlog")) return message.guild.createChannel('modlog', 'text')
-        message.guild.channels.find("name", "modlog").send("uinfos")
+        message.guild.channels.find("name", "modlog").send("Commande : uinfos / par :" + message.author.username + "#" + message.author.discriminator)
     }
 
     if (message.content.startsWith(prefix + "ic")) {
