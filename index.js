@@ -152,6 +152,32 @@ bot.on('message', message => {
           //}, Math.random() * (1 - 3) + 1 * 1000);
         //});
     //}
+
+    var hug = [
+        "https://media.giphy.com/media/lrr9rHuoJOE0w/giphy.gif",
+        "https://media.giphy.com/media/ByJYqLWjvzJwk/giphy.gif",
+        "https://media.giphy.com/media/xUPGcz1FByjZlWZKms/giphy.gif",
+        "https://cdn.discordapp.com/attachments/304934695806697472/335180737353482242/hug.gif",
+        "https://cdn.discordapp.com/attachments/304934695806697472/335180737793753090/hug-1.gif",
+    ]
+
+    if(message.content.startsWith(prefix + "hug")) {
+        let args = message.content.split(' ');
+        let hugs = message.mentions.users.first();
+        if (message.mentions.users.size < 1) {
+          let base = new Discord.RichEmbed()
+            .setTitle('Viens, je te fait un câlin !')
+                    .setImage(hug[Math.floor(Math.random() * hug.length)])
+                    .setColor(Math.floor(Math.random() * 16777214) + 1)
+          message.channel.send(base)
+        } else {
+            let embed = new Discord.RichEmbed()
+              .setTitle(message.author.username + ` fait un câlin à ${hugs.username}`)
+              .setImage(hug[Math.floor(Math.random() * hug.length)])
+              .setColor(Math.floor(Math.random() * 16777214) + 1)
+            message.channel.send(embed)
+        }
+    }
 });
 
 function random(min, max) {
