@@ -58,7 +58,7 @@ bot.on('message', message => {
     
     }
 
-    if (message.content.startsWith(prefix + "ask")){
+    if(message.content==='ask')return{
         random();
         if (randum == 1){
             message.channel.sendMessage("Oui");
