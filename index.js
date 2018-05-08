@@ -58,33 +58,33 @@ bot.on('message', message => {
     
     }
 
-    //if(message.content === prefix + "ask"{
-        //random();
-        //if (randum == 1){
-            //message.channel.sendMessage("Oui");
-            //console.log(randum);
-        //}
-        //if (randum == 2){
-            //message.channel.sendMessage("Non");
-            //console.log(randum);
-        //}
-        //if (randum == 3){
-            //message.channel.sendMessage("Peut-être");
-            //console.log(randum);
-        //}
-        //if (randum == 4){
-            //message.channel.sendMessage("Jamais");
-            //console.log(randum);
-        //}
-        //if (randum == 5){
-            //message.channel.sendMessage("Biensûr");
-            //console.log(randum);
-        //}
-        //if (randum == 0){
-            //message.channel.sendMessage("Je ne sais pas");
-            //console.log(randum);
-        //}
-    //}
+    if (message.content.startsWith(prefix + "ask")){
+        random();
+        if (randum == 1){
+            message.channel.sendMessage("Oui");
+            console.log(randum);
+        }
+        if (randum == 2){
+            message.channel.sendMessage("Non");
+            console.log(randum);
+        }
+        if (randum == 3){
+            message.channel.sendMessage("Peut-être");
+            console.log(randum);
+        }
+        if (randum == 4){
+            message.channel.sendMessage("Jamais");
+            console.log(randum);
+        }
+        if (randum == 5){
+            message.channel.sendMessage("Biensûr");
+            console.log(randum);
+        }
+        if (randum == 0){
+            message.channel.sendMessage("Je ne sais pas");
+            console.log(randum);
+        }
+    }
 
     if (message.content.startsWith(prefix + "avatar")) {
         if (!message.mentions.users.first()) return message.channel.send("**❌ | Entrez un utilisateur.**")
