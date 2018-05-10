@@ -25,8 +25,8 @@ bot.on('message', message => {
         var help_embed = new Discord.RichEmbed()
             .setColor('#E81414')
             .addField("Prefix", "§")
-            .addField("Commandes du bot !", "- help : Affiche les commandes du bot \n- uinfos : Montre les infos de la personne \n- ic : InterChat (chat entre les serveurs qui ont le channel interchat) \n- url : raccourcisseur de lien")
-            .addField("Fun", "- ask : Poser une question (réponse par oui ou non) \n- avatar : Montre l'avatar de la personne \n- say : Fait parler le bot (perm admin requise) \n- hug : Faire un câlin à quelqu'un \n- kiss : faire un bisous à quelqu'un \n- panda : montre un panda")
+            .addField("Commandes du bot !", "- help : Affiche les commandes du bot \n- uinfos : Montre les infos de la personne \n- ic : InterChat (chat entre les serveurs qui ont le channel interchat) \n- url : raccourcisseur de lien \n- afk : système d'afk")
+            .addField("Fun", "- ask : Poser une question (réponse par oui ou non) \n- avatar : Montre l'avatar de la personne \n- say : Fait parler le bot (perm admin requise) \n- hug : Faire un câlin à quelqu'un \n- kiss : faire un bisous à quelqu'un \n- panda : montre un panda \n- hack : hacker quelqu'un \n- aurevoir : dire aurevoir ^^")
             .setFooter("Bot crée par 🐼CΛLLMΣパンダ🐼#9139")
         message.channel.sendEmbed(help_embed);
         console.log("Commande : help");
@@ -235,6 +235,89 @@ bot.on('message', message => {
               .setColor(Math.floor(Math.random() * 16777214) + 1)
             message.channel.send(embed)
         }
+    }
+
+    var aurevoir = [
+        "https://cdn.discordapp.com/attachments/376801013048410113/444246255233794048/c6Eyvg_Z3hE0TF3C2Xts95l68xs.gif"
+    ]
+
+    if(message.content.startsWith(prefix + "aurevoir")) {
+        let embed = new Discord.RichEmbed()
+            .setTitle(`aurevoir ${message.author.username}`)
+            .setImage(aurevoir[Math.floor(Math.random() * aurevoir.length)])
+            .setColor(Math.floor(Math.random() * 16777214) + 1)
+        message.channel.send(embed)
+    }
+
+    var hack1 = ["https://media.giphy.com/media/9WC8WTZsFxkRi/giphy.gif"]
+
+    var hack2 = ["https://media.giphy.com/media/93fnLxrcjm8yz1ufmo/giphy.gif"]
+
+    if(message.content.startsWith(prefix + "hack")) {
+        let args = message.content.split(' ');
+        let hacks = message.mentions.users.first();
+        if (message.mentions.users.size < 1) {
+          message.channel.send("Erreur: tu dois préciser une personne à hacker")
+        } else {
+            message.channel.startTyping();
+            message.delete()
+            setTimeout (function() {
+                let embedh2 = new Discord.RichEmbed()
+                  .setTitle(message.author.username + ` à hacker ${hacks.username}`)
+                  .setImage(hack2[Math.floor(Math.random() * hack2.length)])
+                  .setColor(Math.floor(Math.random() * 16777214) + 1)
+                message.channel.send(embedh2)
+                message.channel.stopTyping();
+            },3000)
+        }
+    }
+
+    const fs = require("fs");
+    var msg = message;
+    
+    let afk = JSON.parse(fs.readFileSync("./afks.json", "utf8"));
+    if (message.content.startsWith(prefix + "remafk")){
+    if (afk[msg.author.id]) {
+    delete afk[msg.author.id];
+    if (msg.member.nickname === null) {
+    msg.channel.send(" re, j'ai enlever votre afk ^^");
+    }else{
+    msg.channel.send(" re, j'ai enlever votre afk ^^");
+    }
+    fs.writeFile("./afks.json", JSON.stringify(afk), (err) => { if (err) console.error(err);});
+    }else{
+    msg.channel.send("Erreur ! Tu es déjà afk");
+    }
+    }
+    
+    
+    if (msg.content.startsWith(prefix + "afk")||msg.content === prefix + "afk") {
+    if (afk[msg.author.id]) {
+    return message.channel.send("Erreur ! Tu es déjà afk -_-");
+    }else{
+    let args1 = msg.content.split(" ").slice(1);
+    if (args1.length === 0) {
+    afk[msg.author.id] = {"reason" : true};
+    msg.delete();
+    msg.channel.send(`tu es désormais afk, met **${prefix}remafk** pour enlever ton afk`).then(x => DeleteQueue.add(x, 10000));
+    }else{
+    afk[msg.author.id] = {"reason" : args1.join(" ")};
+    msg.delete();
+    msg.channel.send(`tu es désormais afk, met **${prefix}remafk** pour enlever ton afk`).then(x => DeleteQueue.add(x, 10000));
+    }
+    fs.writeFile("./afks.json", JSON.stringify(afk), (err) => { if (err) console.error(err);});
+    }
+    }
+        
+        var mentionned = message.mentions.users.first();
+    if(msg.mentions.users.size > 0) {
+    if (afk[msg.mentions.users.first().id]) {
+    if (afk[msg.mentions.users.first().id].reason === true) {
+    message.channel.send(`@${mentionned.username} est AFK: pas de raison`);
+    }else{
+    message.channel.send(`@${mentionned.username} est AFK: ${afk[msg.mentions.users.first().id].reason}`);
+    }
+    }
     }
 });
 
