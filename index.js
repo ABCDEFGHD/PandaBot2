@@ -8,7 +8,7 @@ var prefix = ("§");
 var randum = 0;
 
 bot.on('ready', () => {
-    bot.user.setPresence({ game: { name: `§help | ${bot.guilds.size} serveurs | ${bot.users.size} utilisateurs`, type: 0}})
+    bot.user.setPresence({ game: { name: `Manger du bambou | §help | ${bot.guilds.size} serveurs`, type: 0}})
     bot.user.setStatus("dnd");
     console.log("Bot Prêt !");
 });
