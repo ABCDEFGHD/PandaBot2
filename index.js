@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const Cleverbot = require("cleverbot-node");
 const clbot = new Cleverbot;
+const shorten = require('isgd');
 
 var bot = new Discord.Client();
 var prefix = ("§");
@@ -24,8 +25,8 @@ bot.on('message', message => {
         var help_embed = new Discord.RichEmbed()
             .setColor('#E81414')
             .addField("Prefix", "§")
-            .addField("Commandes du bot !", "- help : Affiche les commandes du bot \n- uinfos : Montre les infos de la personne \n- ic : InterChat (chat entre les serveurs qui ont le channel interchat)")
-            .addField("Fun", "- ask : Poser une question (réponse par oui ou non) \n- avatar : Montre l'avatar de la personne \n- say : Fait parler le bot (perm admin requise) \n- hug : Faire un câlin à quelqu'un")
+            .addField("Commandes du bot !", "- help : Affiche les commandes du bot \n- uinfos : Montre les infos de la personne \n- ic : InterChat (chat entre les serveurs qui ont le channel interchat) \n- url : raccourcisseur de lien")
+            .addField("Fun", "- ask : Poser une question (réponse par oui ou non) \n- avatar : Montre l'avatar de la personne \n- say : Fait parler le bot (perm admin requise) \n- hug : Faire un câlin à quelqu'un \n- kiss : faire un bisous à quelqu'un")
             .setFooter("Bot crée par 🐼CΛLLMΣパンダ🐼#9139")
         message.channel.sendEmbed(help_embed);
         console.log("Commande : help");
@@ -174,6 +175,63 @@ bot.on('message', message => {
             let embed = new Discord.RichEmbed()
               .setTitle(message.author.username + ` fait un câlin à ${hugs.username}`)
               .setImage(hug[Math.floor(Math.random() * hug.length)])
+              .setColor(Math.floor(Math.random() * 16777214) + 1)
+            message.channel.send(embed)
+        }
+    }
+    
+    if(message.content.startsWith(prefix + "url")) {
+        if(!args[0]) return message.channel.send('**Erreur: il faut faire §url <URL>**')
+        if(!args[1]) {
+            shorten.shorten(args[0], function(res) {
+                if(res.startsWith('Error:')) return message.channel.send('**Erreur tu dois mettre un lien valide**');
+                message.channel.send(`**<${res}>**`);
+            })
+        } else {
+            shorten.custom(args[0], args[1], function(res){
+                if(res.startsWith('Error:')) return message.channel.send(`**${res}**`);
+                message.channel.send(`**<${res}>**`);
+            })
+        }
+    }
+
+    let argsp = message.content.split(' ');
+    if(argsp.some(e => e==="panda")){
+        var emoji = bot.emojis.find("name", "PandaGeant")
+        message.react(emoji)
+    }
+
+    if(message.content.startsWith(prefix + "panda")) {
+        var emoji = bot.emojis.find("name", "PandaGeant")
+        message.channel.send("Voici un panda " + emoji)
+    }
+
+    if(argsp.some(e => e==="loser")){
+        var emoji = bot.emojis.find("name", "TakeTheL")
+        message.react(emoji)
+    }
+
+    var kiss = [
+        "https://media.giphy.com/media/QGc8RgRvMonFm/giphy.gif",
+        "https://media.giphy.com/media/wHbQ7IMBrgTzq/giphy.gif",
+        "https://media.giphy.com/media/4dCj46k0Qtyxy/giphy.gif",
+        "https://media.giphy.com/media/1rRzqMZzS5uyQ/giphy.gif",
+        "https://media.giphy.com/media/11GnTlz9rJ07Mk/giphy.gif",
+    ]
+
+    if(message.content.startsWith(prefix + "kiss")) {
+        let args = message.content.split(' ');
+        let kisss = message.mentions.users.first();
+        if (message.mentions.users.size < 1) {
+          let base = new Discord.RichEmbed()
+            .setTitle('Viens, je te fait un bisous !')
+                    .setImage(kiss[Math.floor(Math.random() * kiss.length)])
+                    .setColor(Math.floor(Math.random() * 16777214) + 1)
+          message.channel.send(base)
+        } else {
+            let embed = new Discord.RichEmbed()
+              .setTitle(message.author.username + ` fait un bisous à ${kisss.username}`)
+              .setImage(kiss[Math.floor(Math.random() * kiss.length)])
               .setColor(Math.floor(Math.random() * 16777214) + 1)
             message.channel.send(embed)
         }
