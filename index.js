@@ -328,7 +328,7 @@ bot.on('message', message => {
 });
 
 bot.on('guildMemberAdd', member => {
-    if(member.guild.id=='407953851316961291');
+    if(member.guild.id=='442006440396193792');
         var bvn_embed = new Discord.RichEmbed()
         .setColor('#E81414')
         .addField("Bienvenue", `Bienvenue ${member.user.username} sur ${member.guild.name}`)
