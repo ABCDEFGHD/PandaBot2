@@ -7,6 +7,7 @@ var bot = new Discord.Client();
 var prefix = ("§");
 var randum = 0;
 
+
 bot.on('ready', () => {
     bot.user.setPresence({ game: { name: `Manger du bambou | §help | ${bot.guilds.size} serveurs`, type: 0}})
     bot.user.setStatus("dnd");
@@ -26,7 +27,7 @@ bot.on('message', message => {
             .setColor('#E81414')
             .addField("Prefix", "§")
             .addField("Commandes du bot !", "- help : Affiche les commandes du bot \n- uinfos : Montre les infos de la personne \n- ic : InterChat (chat entre les serveurs qui ont le channel interchat) \n- url : raccourcisseur de lien \n- afk : système d'afk")
-            .addField("Fun", "- ask : Poser une question (réponse par oui ou non) \n- avatar : Montre l'avatar de la personne \n- say : Fait parler le bot (perm admin requise) \n- hug : Faire un câlin à quelqu'un \n- kiss : faire un bisous à quelqu'un \n- panda : montre un panda \n- hack : hacker quelqu'un \n- aurevoir : dire aurevoir ^^")
+            .addField("Fun", "- ask : Poser une question (réponse par oui ou non) \n- avatar : Montre l'avatar de la personne \n- say : Fait parler le bot (perm admin requise) \n- hug : Faire un câlin à quelqu'un \n- kiss : faire un bisous à quelqu'un \n- panda : montre un panda \n- frog : fait apparaitre une grenouille \n- hack : hacker quelqu'un \n- aurevoir : dire aurevoir ^^")
             .setFooter("Bot crée par 🐼CΛLLMΣパンダ🐼#9139")
         message.channel.sendEmbed(help_embed);
         console.log("Commande : help");
@@ -225,8 +226,8 @@ bot.on('message', message => {
         if (message.mentions.users.size < 1) {
           let base = new Discord.RichEmbed()
             .setTitle('Viens, je te fait un bisous !')
-                    .setImage(kiss[Math.floor(Math.random() * kiss.length)])
-                    .setColor(Math.floor(Math.random() * 16777214) + 1)
+            .setImage(kiss[Math.floor(Math.random() * kiss.length)])
+            .setColor(Math.floor(Math.random() * 16777214) + 1)
           message.channel.send(base)
         } else {
             let embed = new Discord.RichEmbed()
@@ -319,7 +320,23 @@ bot.on('message', message => {
     }
     }
     }
+
+    if(message.content.startsWith(prefix + "frog")) {
+        message.channel.send(":frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::white_circle::black_circle::black_circle::white_circle::frog::frog::frog::white_circle::black_circle::black_circle::white_circle: \n:frog::white_circle::black_circle::black_circle::white_circle::black_circle::white_circle::frog::white_circle::black_circle::black_circle::white_circle::black_circle::white_circle: \n:frog::white_circle::black_circle::white_circle::black_circle::black_circle::white_circle::frog::white_circle::black_circle::white_circle::black_circle::black_circle::white_circle: \n:frog::frog::white_circle::black_circle::white_circle::white_circle::frog::frog::frog::white_circle::black_circle::white_circle::white_circle: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:red_circle::red_circle::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::red_circle::red_circle::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle: \n:frog::frog::frog::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog:")
+    }
+    
 });
+
+bot.on('guildMemberAdd', member => {
+    if(member.guild.id=='407953851316961291');
+        var bvn_embed = new Discord.RichEmbed()
+        .setColor('#E81414')
+        .addField("Bienvenue", `Bienvenue ${member.user.username} sur ${member.guild.name}`)
+        .setImage(member.user.displayAvatarURL)
+        .setFooter(`${member.user.username}`)
+        .setTimestamp()
+        member.guild.channels.find("name", "bienvenue").send(bvn_embed)
+})
 
 function random(min, max) {
     min = Math.ceil(0);
