@@ -328,14 +328,13 @@ bot.on('message', message => {
 });
 
 bot.on('guildMemberAdd', member => {
-    if(member.guild.id=='442006440396193792');
-        var bvn_embed = new Discord.RichEmbed()
-        .setColor('#E81414')
-        .addField("Bienvenue", `Bienvenue ${member.user.username} sur ${member.guild.name}`)
-        .setImage(member.user.displayAvatarURL)
-        .setFooter(`${member.user.username}`)
-        .setTimestamp()
-        member.guild.channels.find("name", "bienvenue").send(bvn_embed)
+    var bvn_embed = new Discord.RichEmbed()
+    .setColor('#E81414')
+    .addField("Bienvenue", `Bienvenue ${member.user.username} sur ${member.guild.name} nous somme actuellement ${member.guild.memberCount}`)
+    .setImage(member.user.displayAvatarURL)
+    .setFooter(`${member.user.username}`)
+    .setTimestamp()
+    member.guild.channels.find("name", "bienvenue").send(bvn_embed)
 })
 
 function random(min, max) {
