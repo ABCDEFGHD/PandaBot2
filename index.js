@@ -199,6 +199,7 @@ bot.on('message', message => {
         }
     }
 
+    let argsp = message.content.split(' ');
     if(argsp.some(e => e==="everyone")){
         var emoji = bot.emojis.find("name", "ping")
         message.react(emoji)
