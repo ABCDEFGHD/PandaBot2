@@ -200,12 +200,12 @@ bot.on('message', message => {
     }
 
     let argsp = message.content.split(' ');
-    if(argsp.some(e => e==="everyone")){
+    if(argsp.some(e => e==="@everyone")){
         var emoji = bot.emojis.find("name", "ping")
         message.react(emoji)
     }
 
-    if(argsp.some(e => e==="PandaBot")){
+    if(argsp.some(e => e==="@PandaBot")){
         var emoji = bot.emojis.find("name", "ping")
         message.react(emoji)
         message.channel.send("Je suis occupé là laisse moi :rage:")
