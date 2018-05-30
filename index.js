@@ -221,7 +221,6 @@ bot.on('message', message => {
         }
     }
 
-    let argsp = message.content.split(' ');
     if(argsp.some(e => e==="panda")){
         var emoji = bot.emojis.find("name", "PandaGeant")
         message.react(emoji)
