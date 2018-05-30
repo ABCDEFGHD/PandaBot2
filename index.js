@@ -211,6 +211,18 @@ bot.on('message', message => {
         message.channel.send("Je suis occupé là laisse moi :rage:")
     }
 
+    if(argsp.some(e => e==="Pandabot")){
+        var emoji = bot.emojis.find("name", "ping")
+        message.react(emoji)
+        message.channel.send("Je suis occupé là laisse moi :rage:")
+    }
+    
+    if(argsp.some(e => e==="pandaBot")){
+        var emoji = bot.emojis.find("name", "ping")
+        message.react(emoji)
+        message.channel.send("Je suis occupé là laisse moi :rage:")
+    }
+    
     const argsc = message.content.split(' ')
     if (message.content.startsWith(prefix + "react")) {
         if (!argsc[0]) return message.channel.send('Erreur: il faut préciser une réaction')
