@@ -199,12 +199,12 @@ bot.on('message', message => {
         }
     }
 
-    if(message.content ==="@everyone") {
+    if(argsp.some(e => e==="everyone")){
         var emoji = bot.emojis.find("name", "ping")
         message.react(emoji)
     }
 
-    if(message.content ==="@PandaBotTest") {
+    if(argsp.some(e => e==="PandaBot")){
         var emoji = bot.emojis.find("name", "ping")
         message.react(emoji)
         message.channel.send("Je suis occupé là laisse moi :rage:")
