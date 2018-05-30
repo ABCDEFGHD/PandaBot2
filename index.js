@@ -2,6 +2,8 @@ const Discord = require('discord.js');
 const Cleverbot = require("cleverbot-node");
 const clbot = new Cleverbot;
 const shorten = require('isgd');
+const ms = require('parse-ms');
+//const db = require('quick-db')
 
 var bot = new Discord.Client();
 var prefix = ("§");
@@ -111,6 +113,7 @@ bot.on('message', message => {
         .addField("ID", `${User.user.id}`)
         .addField("Créé le", `${User.user.createdAt}`)
         .addField("Bot ?", `${User.user.bot}`)
+        .addField("ID", `${message.guild.id}`)
         .setThumbnail(User.user.displayAvatarURL);
         message.channel.sendEmbed(uinfoEmbed)
         if (!message.guild.channels.find("name", "modlog")) return message.guild.createChannel('modlog', 'text')
@@ -196,9 +199,45 @@ bot.on('message', message => {
         }
     }
 
+    if(message.content ==="@everyone") {
+        var emoji = bot.emojis.find("name", "ping")
+        message.react(emoji)
+    }
+
+    if(message.content ==="@PandaBotTest") {
+        var emoji = bot.emojis.find("name", "ping")
+        message.react(emoji)
+        message.channel.send("Je suis occupé là laisse moi :rage:")
+    }
+
+    const argsc = message.content.split(' ')
+    if (message.content.startsWith(prefix + "react")) {
+        if (!argsc[0]) return message.channel.send('Erreur: il faut préciser une réaction')
+        if (!argsc[1] == 'loser') {
+            message.channel.fetchMessages({ limit: 1 })
+                .then(messages => messages.first.react(bot.emojis.find("name", "TakeTheL")));
+            message.channel.bulkDelete(1);
+        }
+    }
+
     let argsp = message.content.split(' ');
     if(argsp.some(e => e==="panda")){
         var emoji = bot.emojis.find("name", "PandaGeant")
+        message.react(emoji)
+    }
+
+    if(argsp.some(e => e==="Panda")){
+        var emoji = bot.emojis.find("name", "PandaGeant")
+        message.react(emoji)
+    }
+
+    if(argsp.some(e => e==="Kappa")){
+        var emoji = bot.emojis.find("name", "kappa")
+        message.react(emoji)
+    }
+
+    if(argsp.some(e => e==="kappa")){
+        var emoji = bot.emojis.find("name", "kappa")
         message.react(emoji)
     }
 
@@ -209,6 +248,56 @@ bot.on('message', message => {
 
     if(argsp.some(e => e==="loser")){
         var emoji = bot.emojis.find("name", "TakeTheL")
+        message.react(emoji)
+    }
+
+    if(argsp.some(e => e==="Loser")){
+        var emoji = bot.emojis.find("name", "TakeTheL")
+        message.react(emoji)
+    }
+
+    if(argsp.some(e => e==="Ah")){
+        var emoji = bot.emojis.find("name", "AH")
+        message.react(emoji)
+    }
+
+    if(argsp.some(e => e==="ah")){
+        var emoji = bot.emojis.find("name", "AH")
+        message.react(emoji)
+    }
+
+    if(argsp.some(e => e==="AH")){
+        var emoji = bot.emojis.find("name", "AH")
+        message.react(emoji)
+    }
+
+    if(argsp.some(e => e==="Nani")){
+        var emoji = bot.emojis.find("name", "Nani")
+        message.react(emoji)
+    }
+
+    if(argsp.some(e => e==="nani")){
+        var emoji = bot.emojis.find("name", "Nani")
+        message.react(emoji)
+    }
+
+    if(argsp.some(e => e==="Ban")){
+        var emoji = bot.emojis.find("name", "MonokumaBan")
+        message.react(emoji)
+    }
+
+    if(argsp.some(e => e==="ban")){
+        var emoji = bot.emojis.find("name", "MonokumaBan")
+        message.react(emoji)
+    }
+
+    if(argsp.some(e => e==="Fortnite")){
+        var emoji = bot.emojis.find("name", "fertnite")
+        message.react(emoji)
+    }
+
+    if(argsp.some(e => e==="fortnite")){
+        var emoji = bot.emojis.find("name", "fertnite")
         message.react(emoji)
     }
 
@@ -321,6 +410,33 @@ bot.on('message', message => {
     }
     }
 
+    var ban = [
+        "https://media.giphy.com/media/qPD4yGsrc0pdm/giphy.gif",
+        "https://media.giphy.com/media/C51woXfgJdug/giphy.gif",
+        "https://media.giphy.com/media/uC9e2ojJn1ZXW/giphy.gif",
+        "https://media.giphy.com/media/nsvGtvp0lYDKg/giphy.gif",
+    ]
+
+    if(message.content.startsWith(prefix + "fakeban")) {
+        message.delete()
+        let args = message.content.split(' ');
+        let hugs = message.mentions.users.first();
+        if (message.mentions.users.size < 1) {
+            message.channel.send("Tu dois préciser quelqu'un à ban")
+        } else {
+            let embedban = new Discord.RichEmbed()
+              .setTitle(message.author.username + ` a ban ${hugs.username}`)
+              .setImage(ban[Math.floor(Math.random() * ban.length)])
+              .setColor(Math.floor(Math.random() * 16777214) + 1)
+            message.channel.send(embedban)
+        }
+    }
+
+    if(message.content.startsWith(prefix + "servlist")) {
+        message.channel.send(bot.guilds.map(r => r.name + ` | **${r.memberCount}** membres`))
+        message.channel.send(`**${bot.guilds.size} serveurs | ${bot.memberCount} membres**`)
+    }
+
     if(message.content.startsWith(prefix + "frog")) {
         message.channel.send(":frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::white_circle::black_circle::black_circle::white_circle::frog::frog::frog::white_circle::black_circle::black_circle::white_circle: \n:frog::white_circle::black_circle::black_circle::white_circle::black_circle::white_circle::frog::white_circle::black_circle::black_circle::white_circle::black_circle::white_circle: \n:frog::white_circle::black_circle::white_circle::black_circle::black_circle::white_circle::frog::white_circle::black_circle::white_circle::black_circle::black_circle::white_circle: \n:frog::frog::white_circle::black_circle::white_circle::white_circle::frog::frog::frog::white_circle::black_circle::white_circle::white_circle: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:red_circle::red_circle::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::red_circle::red_circle::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle: \n:frog::frog::frog::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog:")
     }
@@ -329,6 +445,18 @@ bot.on('message', message => {
         message.channel.send(`**${message.guild.memberCount} Utilisateurs**`)
     }
     
+    //if(message.content.startsWith(prefix + "daily")) {
+        //if(message.guild.id!=='436171403469783041') {
+            //let cooldown = 8.64e+7;
+            //let lastDaily = db.fetch(`lastDaily_${message.author.id}`);
+            //if(lastDaily !== null && cooldown - (Date.now() - lastDaily) > 0) {
+                //let timeObj = ms(cooldown - (Date.now() - lastDaily));
+                //message.channel.send(`tu as déjà colecté ton argent, il faut attendre **${timeObj.hours}h ${timeObj.minutes}m**`);
+            //} else {
+                //message.channel.send(`!add-money @${message.author.id} 10`)
+            //}
+        //}
+    //}
 });
 
 bot.on('guildMemberAdd', member => {
