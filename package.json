@@ -2,11 +2,17 @@
   "name": "",
   "version": "",
   "dependencies": {
+    "array-sort": "^1.0.0",
     "cleverbot-node": "^0.3.11",
     "discord.js": "^11.3.2",
     "isgd": "^1.1.3",
     "lowdb": "^1.0.0",
     "opusscript": "0.0.6",
+    "parse-ms": "^1.0.1",
+    "python": "0.0.4",
+    "quick": "0.0.6",
+    "quick-db": "^1.0.5",
+    "table": "^4.0.3",
     "ytdl-core": "^0.20.2"
   }
 }
