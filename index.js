@@ -205,7 +205,7 @@ bot.on('message', message => {
         message.react(emoji)
     }
 
-    if(argsp.some(e => e==="@PandaBot#8022")){
+    if(argsp.some(e => e==="PandaBot")){
         var emoji = bot.emojis.find("name", "ping")
         message.react(emoji)
         message.channel.send("Je suis occupé là laisse moi :rage:")
