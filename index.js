@@ -204,7 +204,7 @@ bot.on('message', message => {
         message.react(emoji)
     }
 
-    if(message.content ==="@PandaBotTest") {
+    if(message.content ==="PandaBot") {
         var emoji = bot.emojis.find("name", "ping")
         message.react(emoji)
         message.channel.send("Je suis occupé là laisse moi :rage:")
@@ -222,25 +222,25 @@ bot.on('message', message => {
 
     let argsp = message.content.split(' ');
     if(argsp.some(e => e==="panda")){
-        if(message.author.id==!'452925362599362570')return;
+        if(message.author.id=='452925362599362570')return;
         var emoji = bot.emojis.find("name", "PandaGeant")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="Panda")){
-        if(message.author.id==!'452925362599362570')return;
+        if(message.author.id=='452925362599362570')return;
         var emoji = bot.emojis.find("name", "PandaGeant")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="Kappa")){
-        if(message.author.id==!'452925362599362570')return;
+        if(message.author.id=='452925362599362570')return;
         var emoji = bot.emojis.find("name", "kappa")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="kappa")){
-        if(message.author.id==!'452925362599362570')return;
+        if(message.author.id=='452925362599362570')return;
         var emoji = bot.emojis.find("name", "kappa")
         message.react(emoji)
     }
@@ -251,73 +251,73 @@ bot.on('message', message => {
     }
 
     if(argsp.some(e => e==="loser")){
-        if(message.author.id==!'452925362599362570')return;
+        if(message.author.id=='452925362599362570')return;
         var emoji = bot.emojis.find("name", "TakeTheL")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="Loser")){
-        if(message.author.id==!'452925362599362570')return;
+        if(message.author.id=='452925362599362570')return;
         var emoji = bot.emojis.find("name", "TakeTheL")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="Ah")){
-        if(message.author.id==!'452925362599362570')return;
+        if(message.author.id=='452925362599362570')return;
         var emoji = bot.emojis.find("name", "AH")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="ah")){
-        if(message.author.id==!'452925362599362570')return;
+        if(message.author.id=='452925362599362570')return;
         var emoji = bot.emojis.find("name", "AH")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="AH")){
-        if(message.author.id==!'452925362599362570')return;
+        if(message.author.id=='452925362599362570')return;
         var emoji = bot.emojis.find("name", "AH")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="Nani")){
-        if(message.author.id==!'452925362599362570')return;
+        if(message.author.id=='452925362599362570')return;
         var emoji = bot.emojis.find("name", "Nani")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="nani")){
-        if(message.author.id==!'452925362599362570')return;
+        if(message.author.id=='452925362599362570')return;
         var emoji = bot.emojis.find("name", "Nani")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="NANI")){
-        if(message.author.id==!'452925362599362570')return;
+        if(message.author.id=='452925362599362570')return;
         var emoji = bot.emojis.find("name", "Nani")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="Ban")){
-        if(message.author.id==!'452925362599362570')return;
+        if(message.author.id=='452925362599362570')return;
         var emoji = bot.emojis.find("name", "MonokumaBan")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="ban")){
-        if(message.author.id==!'452925362599362570')return;
+        if(message.author.id=='452925362599362570')return;
         var emoji = bot.emojis.find("name", "MonokumaBan")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="Fortnite")){
-        if(message.author.id==!'452925362599362570')return;
+        if(message.author.id=='452925362599362570')return;
         var emoji = bot.emojis.find("name", "fertnite")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="fortnite")){
-        if(message.author.id==!'452925362599362570')return;
+        if(message.author.id=='452925362599362570')return;
         var emoji = bot.emojis.find("name", "fertnite")
         message.react(emoji)
     }
