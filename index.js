@@ -199,30 +199,17 @@ bot.on('message', message => {
         }
     }
 
-    let argsp = message.content.split(' ');
-    if(argsp.some(e => e==="@everyone")){
+    if(message.content ==="@everyone") {
         var emoji = bot.emojis.find("name", "ping")
         message.react(emoji)
     }
 
-    if(argsp.some(e => e==="PandaBot")){
+    if(message.content ==="@PandaBotTest") {
         var emoji = bot.emojis.find("name", "ping")
         message.react(emoji)
         message.channel.send("Je suis occupé là laisse moi :rage:")
     }
 
-    if(argsp.some(e => e==="Pandabot")){
-        var emoji = bot.emojis.find("name", "ping")
-        message.react(emoji)
-        message.channel.send("Je suis occupé là laisse moi :rage:")
-    }
-    
-    if(argsp.some(e => e==="pandaBot")){
-        var emoji = bot.emojis.find("name", "ping")
-        message.react(emoji)
-        message.channel.send("Je suis occupé là laisse moi :rage:")
-    }
-    
     const argsc = message.content.split(' ')
     if (message.content.startsWith(prefix + "react")) {
         if (!argsc[0]) return message.channel.send('Erreur: il faut préciser une réaction')
@@ -233,22 +220,27 @@ bot.on('message', message => {
         }
     }
 
+    let argsp = message.content.split(' ');
     if(argsp.some(e => e==="panda")){
+        if(message.author.id==!'452925362599362570')return;
         var emoji = bot.emojis.find("name", "PandaGeant")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="Panda")){
+        if(message.author.id==!'452925362599362570')return;
         var emoji = bot.emojis.find("name", "PandaGeant")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="Kappa")){
+        if(message.author.id==!'452925362599362570')return;
         var emoji = bot.emojis.find("name", "kappa")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="kappa")){
+        if(message.author.id==!'452925362599362570')return;
         var emoji = bot.emojis.find("name", "kappa")
         message.react(emoji)
     }
@@ -259,56 +251,73 @@ bot.on('message', message => {
     }
 
     if(argsp.some(e => e==="loser")){
+        if(message.author.id==!'452925362599362570')return;
         var emoji = bot.emojis.find("name", "TakeTheL")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="Loser")){
+        if(message.author.id==!'452925362599362570')return;
         var emoji = bot.emojis.find("name", "TakeTheL")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="Ah")){
+        if(message.author.id==!'452925362599362570')return;
         var emoji = bot.emojis.find("name", "AH")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="ah")){
+        if(message.author.id==!'452925362599362570')return;
         var emoji = bot.emojis.find("name", "AH")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="AH")){
+        if(message.author.id==!'452925362599362570')return;
         var emoji = bot.emojis.find("name", "AH")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="Nani")){
+        if(message.author.id==!'452925362599362570')return;
         var emoji = bot.emojis.find("name", "Nani")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="nani")){
+        if(message.author.id==!'452925362599362570')return;
+        var emoji = bot.emojis.find("name", "Nani")
+        message.react(emoji)
+    }
+
+    if(argsp.some(e => e==="NANI")){
+        if(message.author.id==!'452925362599362570')return;
         var emoji = bot.emojis.find("name", "Nani")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="Ban")){
+        if(message.author.id==!'452925362599362570')return;
         var emoji = bot.emojis.find("name", "MonokumaBan")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="ban")){
+        if(message.author.id==!'452925362599362570')return;
         var emoji = bot.emojis.find("name", "MonokumaBan")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="Fortnite")){
+        if(message.author.id==!'452925362599362570')return;
         var emoji = bot.emojis.find("name", "fertnite")
         message.react(emoji)
     }
 
     if(argsp.some(e => e==="fortnite")){
+        if(message.author.id==!'452925362599362570')return;
         var emoji = bot.emojis.find("name", "fertnite")
         message.react(emoji)
     }
@@ -450,6 +459,7 @@ bot.on('message', message => {
     }
 
     if(message.content.startsWith(prefix + "frog")) {
+        message.delete()
         message.channel.send(":frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::white_circle::black_circle::black_circle::white_circle::frog::frog::frog::white_circle::black_circle::black_circle::white_circle: \n:frog::white_circle::black_circle::black_circle::white_circle::black_circle::white_circle::frog::white_circle::black_circle::black_circle::white_circle::black_circle::white_circle: \n:frog::white_circle::black_circle::white_circle::black_circle::black_circle::white_circle::frog::white_circle::black_circle::white_circle::black_circle::black_circle::white_circle: \n:frog::frog::white_circle::black_circle::white_circle::white_circle::frog::frog::frog::white_circle::black_circle::white_circle::white_circle: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:red_circle::red_circle::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::red_circle::red_circle::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle: \n:frog::frog::frog::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog:")
     }
 
