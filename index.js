@@ -106,6 +106,9 @@ bot.on('message', message => {
             }
     message.channel.send("", {embed})
     }
+    
+    if (message.content.startsWith(prefix + "poeme")){
+        message.channel.send("Sans appuis, sans parents, et seuls en ce monde, \nUnissons nos forces, nos coeurs et nos destins ; \nTissons, toi et moi unis, d'authentiques liens : \nBâtissons à deux une relation réelle et profonde.\n Par la confiance, la franchise et la loyauté, \nQue cette fraternité nous soutienne et nous lie ; \nUn ami doit pour son ami le secourir dans la vie :\nQue nos deux âmes nouées puissent s'entraider.\nNous, main dans la main, bravons nos lendemains,\nEt pour rendre plus doux nos malheurs communs,\nDe deux âmes meurtries, qu'Amitié n'en fasse qu'une.\nSans être frères de sang, devenons frères de coeurs, \nPartageons nos joies et soucis, et nos pires douleurs : \nEt que ces instants partagés, deviennent notre fortune.")
 
     if(message.content.startsWith(prefix + "uinfos")) {
         if (!message.mentions.users.first()) return message.channel.send("** ❌ | Entrez un utilisateur.**")
