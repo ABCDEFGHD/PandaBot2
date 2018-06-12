@@ -40,6 +40,11 @@ bot.on('message', message => {
         console.log("Commande : ping")
     }
 
+    if(message.content.startsWith(prefix + "update")){
+        bot.user.setPresence({ game: { name: `Manger du bambou | ${prefix}help | ${bot.guilds.size} serveurs`, type: 0}})
+        bot.user.setStatus("dnd");
+    }
+
     var command = message.content.split(" ")[0];
     command = command.slice(prefix.length);
     var args = message.content.split(" ").slice(1);  
