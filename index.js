@@ -6,12 +6,12 @@ const ms = require('parse-ms');
 //const db = require('quick-db')
 
 var bot = new Discord.Client();
-var prefix = ("§");
+var prefix = ("pb!");
 var randum = 0;
 
 
 bot.on('ready', () => {
-    bot.user.setPresence({ game: { name: `Manger du bambou | §help | ${bot.guilds.size} serveurs`, type: 0}})
+    bot.user.setPresence({ game: { name: `Manger du bambou | ${prefix}help | ${bot.guilds.size} serveurs`, type: 0}})
     bot.user.setStatus("dnd");
     console.log("Bot Prêt !");
 });
@@ -30,7 +30,7 @@ bot.on('message', message => {
             .addField("Prefix", `${prefix}`)
             .addField("Commandes du bot !", "- help : Affiche les commandes du bot \n- uinfos : Montre les infos de la personne \n- ic : InterChat (chat entre les serveurs qui ont le channel interchat) \n- url : raccourcisseur de lien \n- afk : système d'afk \n- servlist : affiche la liste des serveurs du bot")
             .addField("Fun", "- ask : Poser une question (réponse par oui ou non) \n- avatar : Montre l'avatar de la personne \n- say : Fait parler le bot (perm admin requise) \n- hug : Faire un câlin à quelqu'un \n- kiss : faire un bisous à quelqu'un \n- panda : montre un panda \n- frog : fait apparaitre une grenouille \n- hack : hacker quelqu'un \n- aurevoir : dire aurevoir ^^ \n- fakeban : ban quelqu'un")
-            .setFooter("Bot crée par 🐼CΛLLMΣパンダ🐼#9139")
+            .setFooter("Bot crée par 🐼CallMeパンダ🐼#9139")
         message.channel.sendEmbed(help_embed);
         console.log("Commande : help");
     }
@@ -130,7 +130,7 @@ bot.on('message', message => {
         if(!ic03) return message.reply("Merci de préciser un message")
         var embedglobal = new Discord.RichEmbed()
         .setColor("0x8BCC14")
-        .setTitle("InterChat §ic (message)")
+        .setTitle(`InterChat ${prefix}ic (message)`)
         .addField("Pseudo", message.author.username + "#" + message.author.discriminator, true)
         .addField("Serveur", message.guild.name, true)
         .addField("Message", ic03)
@@ -185,7 +185,7 @@ bot.on('message', message => {
     }
     
     if(message.content.startsWith(prefix + "url")) {
-        if(!args[0]) return message.channel.send('**Erreur: il faut faire §url <URL>**')
+        if(!args[0]) return message.channel.send(`**Erreur: il faut faire ${prefix}url <URL>**`)
         if(!args[1]) {
             shorten.shorten(args[0], function(res) {
                 if(res.startsWith('Error:')) return message.channel.send('**Erreur tu dois mettre un lien valide**');
