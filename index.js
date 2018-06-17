@@ -130,6 +130,13 @@ bot.on('message', message => {
     }
 
     if (message.content.startsWith(prefix + "ic")) {
+        if(message.author.id=='191907565230096386'){
+            var rank = "Owner"
+        }else if(message.author.id=='376795548721872899'){
+            var rank = "Princesse"
+        }else{
+            var rank = "Membre"
+        }
         message.delete()
         let icargs = message.content.split(" ").slice(1);
         let ic03 = icargs.join(" ")
@@ -140,8 +147,9 @@ bot.on('message', message => {
         var embedglobal = new Discord.RichEmbed()
         .setColor("0x8BCC14")
         .setTitle(`InterChat ${prefix}ic (message)`)
-        .addField("Pseudo", message.author.username + "#" + message.author.discriminator, true)
         .addField("Serveur", message.guild.name, true)
+        .addField("Pseudo", message.author.username + "#" + message.author.discriminator, true)
+        .addField("Rank", rank)
         .addField("Message", ic03)
         .setFooter("PandaBot")
         .setTimestamp()
