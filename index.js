@@ -111,7 +111,7 @@ Client.on("message", Message => {
 
 										m.edit({
 											embed: {
-												color: 0xFF0000,
+												color: 0x000000,
 												author: {
 													name: "Song added !",
 													icon_url: "https://yt3.ggpht.com/OgVV66t5vou1LkAbPh7yHbJA73Z2kKHs6-mFaeVFjnlU-pWESAPXFi-5pMASF7Mp1YLfoMdeI38v68U=s288-mo-c-c0xffffffff-rj-k-no"
