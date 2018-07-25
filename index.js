@@ -9,7 +9,6 @@ var bot = new Discord.Client();
 var prefix = ("pb!");
 var randum = 0;
 
-
 bot.on('ready', () => {
     bot.user.setPresence({ game: { name: `Manger du bambou | ${prefix}help | ${bot.guilds.size} serveurs`, type: 0}})
     bot.user.setStatus("dnd");
@@ -495,7 +494,6 @@ bot.on('message', message => {
             //}
         //}
     //}
-	}
  });
  
 //bot.on('guildMemberAdd', member => {
