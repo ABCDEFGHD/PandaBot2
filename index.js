@@ -14,6 +14,7 @@ bot.on('ready', () => {
     bot.user.setPresence({ game: { name: `Manger du bambou | ${prefix}help | ${bot.guilds.size} serveurs`, type: 0}})
     bot.user.setStatus("dnd");
     console.log("Bot Prêt !");
+});
  
 bot.login(process.env.TOKEN)
 
@@ -473,12 +474,12 @@ bot.on('message', message => {
         message.channel.send(bot.guilds.map(r => r.name + ` | **${r.memberCount}** membres`))
         message.channel.send(`**${bot.guilds.size} serveurs | ${bot.users.size} membres**`)
     }
- 
+
     if(message.content.startsWith(prefix + "frog")) {
         message.delete()
         message.channel.send(":frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::white_circle::black_circle::black_circle::white_circle::frog::frog::frog::white_circle::black_circle::black_circle::white_circle: \n:frog::white_circle::black_circle::black_circle::white_circle::black_circle::white_circle::frog::white_circle::black_circle::black_circle::white_circle::black_circle::white_circle: \n:frog::white_circle::black_circle::white_circle::black_circle::black_circle::white_circle::frog::white_circle::black_circle::white_circle::black_circle::black_circle::white_circle: \n:frog::frog::white_circle::black_circle::white_circle::white_circle::frog::frog::frog::white_circle::black_circle::white_circle::white_circle: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:red_circle::red_circle::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::red_circle::red_circle::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle: \n:frog::frog::frog::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle::red_circle: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog::frog: \n:frog::frog::frog::frog::frog::frog::frog::frog::frog:")
     }
- 
+
     if(message.content.startsWith(prefix + "membercount")) {
         message.channel.send(`**${message.guild.memberCount} Utilisateurs**`)
     }
@@ -495,7 +496,7 @@ bot.on('message', message => {
             //}
         //}
     //}
- });
+});
  
 //bot.on('guildMemberAdd', member => {
     //if (message.guild.channels.find("name", "modlog")){
