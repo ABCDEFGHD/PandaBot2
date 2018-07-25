@@ -24,6 +24,7 @@ Client.on("ready", () => {
 	Client.user.setActivity(`&help | ${Stats.guilds} serveurs | ${Stats.users} utilisateurs`, { type: 0 })
 		.then(presence => console.log(`[INFOS] Activity set to ${presence.game ? presence.game.name : 'none'}`))
 		.catch(console.error);
+	Client.user.setStatus("online");
 });
 
 /**
@@ -38,7 +39,15 @@ Client.on("message", Message => {
 		if (!Message.guild || Message.author.username == Client.user.username) return;
 
 		/** Decompose the command. */
-		CommandName = Content.substring(PREFIX.length);
+		CommandParts = Content.substring(PREFIX.length).split(" ");
+		CommandName = Commands[0];
+		CommandArgs = CommandParts.shift() && CommandParts;
+
+		switch(CommandName) {
+			default:
+				Message.channel.send("Commande invalide !");
+				break;
+		}
 	}
 });
 
