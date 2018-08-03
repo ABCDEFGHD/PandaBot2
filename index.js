@@ -1,20 +1,21 @@
 const Discord = require('discord.js');
 const Cleverbot = require("cleverbot-node");
-const clbot = new Cleverbot;
 const shorten = require('isgd');
-const ms = require('parse-ms');
 //const db = require('quick-db')
 
 var bot = new Discord.Client();
 var prefix = ("pb!");
 var randum = 0;
+var randum2 = 0;
+
+
 
 bot.on('ready', () => {
     bot.user.setPresence({ game: { name: `Manger du bambou | ${prefix}help | ${bot.guilds.size} serveurs`, type: 0}})
     bot.user.setStatus("dnd");
     console.log("Bot Prêt !");
 });
- 
+
 bot.login(process.env.TOKEN)
 
 bot.on('message', message => {
@@ -28,7 +29,7 @@ bot.on('message', message => {
             .setColor('#E81414')
             .addField("Prefix", `${prefix}`)
             .addField("Commandes du bot !", "- help : Affiche les commandes du bot \n- uinfos : Montre les infos de la personne \n- ic : InterChat (chat entre les serveurs qui ont le channel interchat) \n- url : raccourcisseur de lien \n- afk : système d'afk \n- servlist : affiche la liste des serveurs du bot")
-            .addField("Fun", "- ask : Poser une question (réponse par oui ou non) \n- avatar : Montre l'avatar de la personne \n- say : Fait parler le bot (perm admin requise) \n- hug : Faire un câlin à quelqu'un \n- kiss : faire un bisous à quelqu'un \n- panda : montre un panda \n- frog : fait apparaitre une grenouille \n- hack : hacker quelqu'un \n- aurevoir : dire aurevoir ^^ \n- fakeban : ban quelqu'un")
+            .addField("Fun", "- ask : Poser une question (réponse par oui ou non) \n- avatar : Montre l'avatar de la personne \n- say : Fait parler le bot (perm admin requise) \n- hug : Faire un câlin à quelqu'un \n- kiss : faire un bisous à quelqu'un \n- panda : montre un panda \n- frog : fait apparaitre une grenouille \n- hack : hacker quelqu'un \n- aurevoir : dire aurevoir ^^ \n- fakeban : ban quelqu'un \n- roll : faire un chiffre entre 0 et 100")
             .setFooter("Bot crée par 🐼CallMeパンダ🐼#9139")
         message.channel.sendEmbed(help_embed);
         console.log("Commande : help");
@@ -91,6 +92,22 @@ bot.on('message', message => {
         if (randum == 0){
             message.channel.sendMessage("Je ne sais pas");
             console.log(randum);
+        }
+    }
+
+    if (message.content.startsWith(prefix + "roll")){
+        random2();
+        if (randum2 < 5){
+            message.channel.sendMessage(`Echec Critique **${randum2}**`);
+            console.log(randum2);
+        }
+        else if (randum2 > 95){
+            message.channel.sendMessage(`Réussite Critique **${randum2}**`);
+            console.log(randum2);
+        }
+        else{
+            message.channel.sendMessage(`Roll: **${randum2}**`);
+            console.log(randum2);
         }
     }
 
@@ -183,7 +200,6 @@ bot.on('message', message => {
     ]
 
     if(message.content.startsWith(prefix + "hug")) {
-        let args = message.content.split(' ');
         let hugs = message.mentions.users.first();
         if (message.mentions.users.size < 1) {
           let base = new Discord.RichEmbed()
@@ -347,7 +363,6 @@ bot.on('message', message => {
     ]
 
     if(message.content.startsWith(prefix + "kiss")) {
-        let args = message.content.split(' ');
         let kisss = message.mentions.users.first();
         if (message.mentions.users.size < 1) {
           let base = new Discord.RichEmbed()
@@ -376,12 +391,10 @@ bot.on('message', message => {
         message.channel.send(embed)
     }
 
-    var hack1 = ["https://media.giphy.com/media/9WC8WTZsFxkRi/giphy.gif"]
 
     var hack2 = ["https://media.giphy.com/media/93fnLxrcjm8yz1ufmo/giphy.gif"]
 
     if(message.content.startsWith(prefix + "hack")) {
-        let args = message.content.split(' ');
         let hacks = message.mentions.users.first();
         if (message.mentions.users.size < 1) {
           message.channel.send("Erreur: tu dois préciser une personne à hacker")
@@ -456,7 +469,6 @@ bot.on('message', message => {
 
     if(message.content.startsWith(prefix + "fakeban")) {
         message.delete()
-        let args = message.content.split(' ');
         let hugs = message.mentions.users.first();
         if (message.mentions.users.size < 1) {
             message.channel.send("Tu dois préciser quelqu'un à ban")
@@ -496,21 +508,27 @@ bot.on('message', message => {
         //}
     //}
 });
- 
-//bot.on('guildMemberAdd', member => {
-    //if (message.guild.channels.find("name", "modlog")){
-        //var bvn_embed = new Discord.RichEmbed()
-        //.setColor('#E81414')
-        //.addField("Bienvenue", `Bienvenue ${member.user.username} sur ${member.guild.name} nous somme actuellement ${member.guild.memberCount}`)
-        //.setImage(member.user.displayAvatarURL)
-        //.setFooter(`${member.user.username}`)
-        //.setTimestamp()
-        //member.guild.channels.find("name", "bienvenue").send(bvn_embed)
-    //}
-//})
- 
+
+bot.on('guildMemberAdd', member => {
+    if (message.guild.channels.find("name", "modlog")){
+        var bvn_embed = new Discord.RichEmbed()
+        .setColor('#E81414')
+        .addField("Bienvenue", `Bienvenue ${member.user.username} sur ${member.guild.name} nous somme actuellement ${member.guild.memberCount}`)
+        .setImage(member.user.displayAvatarURL)
+        .setFooter(`${member.user.username}`)
+        .setTimestamp()
+        member.guild.channels.find("name", "bienvenue").send(bvn_embed)
+    }
+})
+
 function random(min, max) {
     min = Math.ceil(0);
     max = Math.floor(5);
     randum = Math.floor(Math.random() * (max - min +1) + min);
+}
+
+function random2(min, max) {
+    min = Math.ceil(0);
+    max = Math.floor(100);
+    randum2 = Math.floor(Math.random() * (max - min +1) + min);
 }
