@@ -1,14 +1,11 @@
 const Discord = require('discord.js');
 const Cleverbot = require("cleverbot-node");
 const shorten = require('isgd');
-//const db = require('quick-db')
 
 var bot = new Discord.Client();
 var prefix = ("pb!");
 var randum = 0;
 var randum2 = 0;
-
-
 
 bot.on('ready', () => {
     bot.user.setPresence({ game: { name: `Manger du bambou | ${prefix}help | ${bot.guilds.size} serveurs`, type: 0}})
@@ -19,11 +16,6 @@ bot.on('ready', () => {
 bot.login(process.env.TOKEN)
 
 bot.on('message', message => {
-    if (message.content.startsWith("test")){
-        message.reply("1, 2, 3, c'est bon !");
-        console.log('test')
-    }
-
     if (message.content.startsWith(prefix + "help")){
         var help_embed = new Discord.RichEmbed()
             .setColor('#E81414')
@@ -68,6 +60,9 @@ bot.on('message', message => {
     }
 
     if (message.content.startsWith(prefix + "ask")){
+        let askargs = message.content.split(" ").slice(1);
+        let ask1 = askargs.join(" ")
+        if(!ask1) return message.reply("Merci de préciser une question")
         random();
         if (randum == 1){
             message.channel.sendMessage("Oui");
@@ -138,18 +133,16 @@ bot.on('message', message => {
         .addField("ID", `${User.user.id}`)
         .addField("Créé le", `${User.user.createdAt}`)
         .addField("Bot ?", `${User.user.bot}`)
-        .addField("ID", `${message.guild.id}`)
+        //.addField("ID du serveur", `${message.guild.id}`)
         .setThumbnail(User.user.displayAvatarURL);
         message.channel.sendEmbed(uinfoEmbed)
-        if (!message.guild.channels.find("name", "modlog")) return message.guild.createChannel('modlog', 'text')
-        message.guild.channels.find("name", "modlog").send("Commande : uinfos / par :" + message.author.username + "#" + message.author.discriminator)
+        //if (!message.guild.channels.find("name", "modlog")) return message.guild.createChannel('modlog', 'text')
+        //message.guild.channels.find("name", "modlog").send("Commande : uinfos / par :" + message.author.username + "#" + message.author.discriminator)
     }
 
     if (message.content.startsWith(prefix + "ic")) {
         if(message.author.id=='191907565230096386'){
             var rank = "Owner"
-        }else if(message.author.id=='376795548721872899'){
-            var rank = "Princesse"
         }else{
             var rank = "Membre"
         }
@@ -510,7 +503,7 @@ bot.on('message', message => {
 });
 
 bot.on('guildMemberAdd', member => {
-    if (message.guild.channels.find("name", "modlog")){
+    if (message.guild.channels.find("name", "bienvenue")){
         var bvn_embed = new Discord.RichEmbed()
         .setColor('#E81414')
         .addField("Bienvenue", `Bienvenue ${member.user.username} sur ${member.guild.name} nous somme actuellement ${member.guild.memberCount}`)
@@ -518,6 +511,8 @@ bot.on('guildMemberAdd', member => {
         .setFooter(`${member.user.username}`)
         .setTimestamp()
         member.guild.channels.find("name", "bienvenue").send(bvn_embed)
+    } else {
+        return
     }
 })
 
