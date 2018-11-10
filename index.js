@@ -36,6 +36,7 @@ bot.on('message', message => {
     if(message.content.startsWith(prefix + "update")){
         bot.user.setPresence({ game: { name: `Manger du bambou | ${prefix}help | ${bot.guilds.size} serveurs`, type: 0}})
         bot.user.setStatus("dnd");
+        bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __update__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "**"))
     }
 
     if (message.content.startsWith(prefix + "say")){
@@ -50,10 +51,11 @@ bot.on('message', message => {
 
     if (message.content.startsWith(prefix + "forcesay")){
         var args = message.content.split(" ").slice(1);
-        if(message.author.id!=='191907565230096386')return message.reply(`**❌ | Mais Tu n'est pas ${me.username} :thinking:**`);
+        if(message.author.id!=='191907565230096386')return message.reply(`**❌ | Mais Tu n'est pas ${me.tag} :thinking:**`);
         message.delete()
         var botmsg = args.join(" ");
         message.channel.send(botmsg)
+        bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __forcesay__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** avec comme message **" + botmsg + "**"))
     
     }
 
@@ -63,30 +65,36 @@ bot.on('message', message => {
         if(!ask1) return message.channel.sendMessage("**❌ | Merci de préciser une question**")
         random();
         if (randum == 1){
+            var askres = "Oui"
             message.channel.sendMessage("Oui");
             console.log(randum);
         }
         if (randum == 2){
+            var askres = "Non"
             message.channel.sendMessage("Non");
             console.log(randum);
         }
         if (randum == 3){
+            var askres = "Peut-être"
             message.channel.sendMessage("Peut-être");
             console.log(randum);
         }
         if (randum == 4){
+            var askres = "Jamais"
             message.channel.sendMessage("Jamais");
             console.log(randum);
         }
         if (randum == 5){
+            var askres = "Biensûr"
             message.channel.sendMessage("Biensûr");
             console.log(randum);
         }
         if (randum == 0){
+            var askres = "Je nes sais pas"
             message.channel.sendMessage("Je ne sais pas");
             console.log(randum);
         }
-        bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __ask__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** avec comme message **" + ask1 + "** Avec la réponse **" + randum + "**"))
+        bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __ask__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** avec comme message **" + ask1 + "** Avec la réponse **" + askres + "**"))
     }
 
     if (message.content.startsWith(prefix + "roll")){
@@ -170,12 +178,13 @@ bot.on('message', message => {
     }
 
     if(message.content.startsWith(prefix + "annonceall")) {
-        if(message.author.id!=='191907565230096386')return message.reply(`**❌ | Mais Tu n'est pas ${me.username} :thinking:**`);
+        if(message.author.id!=='191907565230096386')return message.reply(`**❌ | Mais Tu n'est pas ${me.tag} :thinking:**`);
         message.delete()
         let aallargs = message.content.split(" ").slice(1);
         let aall = aallargs.join(" ")
         if(!aall) return message.reply("**❌ | Merci de préciser un message**")
         bot.channels.findAll('name', 'annonce').map(channel => channel.send(aall))
+        bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __annonceall__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** avec comme message **" + aall + "**"))
     }
 
     //if (message.channel.type === "dm") {
@@ -443,8 +452,10 @@ bot.on('message', message => {
     delete afk[msg.author.id];
     if (msg.member.nickname === null) {
     msg.channel.send("J'ai enlever votre afk");
+    bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __remafk__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "**"))
     }else{
     msg.channel.send("J'ai enlever votre afk");
+    bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __remafk__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "**"))
     }
     fs.writeFile("./afks.json", JSON.stringify(afk), (err) => { if (err) console.error(err);});
     }else{
@@ -462,10 +473,12 @@ bot.on('message', message => {
     afk[msg.author.id] = {"reason" : true};
     msg.delete();
     msg.channel.send(`Tu es désormais afk, met **${prefix}remafk** pour enlever ton afk`).then(x => DeleteQueue.add(x, 10000));
+    bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __afk__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** sans raison"))
     }else{
     afk[msg.author.id] = {"reason" : args1.join(" ")};
     msg.delete();
     msg.channel.send(`Tu es désormais afk, met **${prefix}remafk** pour enlever ton afk`).then(x => DeleteQueue.add(x, 10000));
+    bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __afk__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** avec comme raison **" + afk[msg.author.id].reason + "**"))
     }
     fs.writeFile("./afks.json", JSON.stringify(afk), (err) => { if (err) console.error(err);});
     }
