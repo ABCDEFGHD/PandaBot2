@@ -1,6 +1,8 @@
 const Discord = require('discord.js');
 const Cleverbot = require("cleverbot-node");
 const shorten = require('isgd');
+const fetch = require('node-fetch')
+var apikey = "UvgdLgy6ZnYj8zGKJ2VtX8SEjoCnQNTl"
 
 var bot = new Discord.Client();
 var prefix = ("pb!");
@@ -21,11 +23,26 @@ bot.on('message', message => {
         var help_embed = new Discord.RichEmbed()
             .setColor('#E81414')
             .addField("Prefix", `${prefix}`)
-            .addField("Commandes du bot !", "- help : Affiche les commandes du bot \n- uinfos : Montre les infos de la personne \n- ic : InterChat (chat entre les serveurs qui ont le channel interchat) \n- url : raccourcisseur de lien \n- afk : système d'afk \n- servlist : affiche la liste des serveurs du bot \n- mc : affiche le nombre de membres sur votre serveur")
+            .addField("Commandes du bot !", "- help : Affiche les commandes du bot \n- uinfos : Montre les infos de la personne \n- ic : InterChat (chat entre les serveurs qui ont le channel interchat) \n- url : raccourcisseur de lien \n- afk : système d'afk \n- servlist : affiche la liste des serveurs du bot \n- mc : affiche le nombre de membres sur votre serveur \n- gif : cherche un gif")
             .addField("Fun", "- ask : Poser une question (réponse par oui ou non) \n- avatar : Montre l'avatar de la personne \n- say : Fait parler le bot (perm admin requise) \n- hug : Faire un câlin à quelqu'un \n- kiss : faire un bisous à quelqu'un \n- panda : montre un panda \n- frog : fait apparaitre une grenouille \n- hack : hacker quelqu'un \n- aurevoir : dire aurevoir ^^ \n- fakeban : ban quelqu'un \n- roll : faire un chiffre entre 0 et 100")
             .setFooter(`Bot crée par ${me.tag}`)
         message.channel.sendEmbed(help_embed);
         bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __help__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "**"))
+    }
+
+    if (message.content.startsWith(prefix + "gif")){
+        var args = message.content.split(" ").slice(1);
+        if(!args[0]) return message.channel.send(`**❌ | il faut faire ${prefix}gif <recherche>**`)
+            fetch('http://api.giphy.com/v1/stickers/search?api_key=' + apikey + '&q=' + args)
+            .then(res => res.json())
+            .then(body => {
+                message.channel.send(body["data"]["1"].url)
+                bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __gif__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** avec comme recherche **" + args + "**"))
+            })
+            .catch(err => {
+                console.log(err)
+                message.channel.send("Erreur: Cette recherche ne donne rien")
+            })
     }
 
     if (message.content.startsWith(prefix + "ping")){
