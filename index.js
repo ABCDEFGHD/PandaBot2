@@ -632,7 +632,7 @@ bot.on('guildMemberAdd', member => {
     if(!member.guild.channels.find("name", "bienvenue")) return;
     var bvn_embed = new Discord.RichEmbed()
     .setColor('#E81414')
-    .addField("Bienvenue", `Bienvenue ${member.user.username} sur ${member.guild.name} nous somme actuellement ${member.guild.memberCount} Membres`)
+    .addField("Bienvenue", `Bienvenue ${member.user.username} sur ${member.guild.name} nous sommes actuellement ${member.guild.memberCount} Membres`)
     .setImage(member.user.displayAvatarURL)
     .setFooter(`${member.user.username}`)
     .setTimestamp()
