@@ -628,19 +628,16 @@ bot.on('message', message => {
     //}
 });
 
-//bot.on('guildMemberAdd', member => {
-    //if (message.guild.channels.find("name", "bienvenue")){
-        //var bvn_embed = new Discord.RichEmbed()
-        //.setColor('#E81414')
-        //.addField("Bienvenue", `Bienvenue ${member.user.username} sur ${member.guild.name} nous somme actuellement ${member.guild.memberCount}`)
-        //.setImage(member.user.displayAvatarURL)
-        //.setFooter(`${member.user.username}`)
-        //.setTimestamp()
-        //member.guild.channels.find("name", "bienvenue").send(bvn_embed)
-    //} else {
-        //return
-    //}
-//})
+bot.on('guildMemberAdd', member => {
+    if(!member.guild.channels.find("name", "bienvenue")) return;
+    var bvn_embed = new Discord.RichEmbed()
+    .setColor('#E81414')
+    .addField("Bienvenue", `Bienvenue ${member.user.username} sur ${member.guild.name} nous somme actuellement ${member.guild.memberCount} Membres`)
+    .setImage(member.user.displayAvatarURL)
+    .setFooter(`${member.user.username}`)
+    .setTimestamp()
+    member.guild.channels.find("name", "bienvenue").send(bvn_embed)
+})
 
 function random(min, max) {
     min = Math.ceil(0);
