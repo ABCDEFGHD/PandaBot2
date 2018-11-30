@@ -1,7 +1,8 @@
 const Discord = require('discord.js');
 const Cleverbot = require("cleverbot-node");
 const shorten = require('isgd');
-const fetch = require('node-fetch')
+const fetch = require('node-fetch');
+var mysql = require('mysql');
 var apikey = "UvgdLgy6ZnYj8zGKJ2VtX8SEjoCnQNTl"
 
 var bot = new Discord.Client();
@@ -21,7 +22,11 @@ bot.on('message', message => {
     var me = bot.users.get("191907565230096386");
     var pandabot = bot.users.get("452925362599362570");
     if (message.content.startsWith(prefix + "help")){
-        var help_embed = new Discord.RichEmbed()
+        var emoji = bot.emojis.find("name", "pbletterbox")
+        message.react(emoji)
+        message.reply(":white_check_mark: Menu de help envoyé en privé")
+        message.author.createDM().then(function (channel){
+            var help_embed = new Discord.RichEmbed()
             .setColor('#E81414')
             .addField("Prefix", `${prefix}`)
             .addField("Commandes du bot !", "- help : Affiche les commandes du bot \n- uinfos : Montre les infos de la personne \n- ic : InterChat (chat entre les serveurs qui ont le channel interchat) \n- url : raccourcisseur de lien \n- afk : système d'afk \n- servlist : affiche la liste des serveurs du bot \n- mc : affiche le nombre de membres sur votre serveur \n- gif : cherche un gif")
@@ -30,8 +35,9 @@ bot.on('message', message => {
             .addField("Réseaux Sociaux", "[YouTube](https://youtube.com/c/CallMeGodness) [Twitter](https://twitter.com/CallMeGodness_)")
             .setFooter(`PandaBot`, `${pandabot.displayAvatarURL}`)
             .setTimestamp()
-        message.channel.sendEmbed(help_embed);
-        bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __help__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "**"))
+            channel.sendEmbed(help_embed);
+            bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __help__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "**"))
+        })
     }
 
     if (message.content.startsWith(prefix + "gif")){
@@ -72,7 +78,7 @@ bot.on('message', message => {
 
     if (message.content.startsWith(prefix + "forcesay")){
         var args = message.content.split(" ").slice(1);
-        if(message.author.id!=='191907565230096386')return message.reply(`**❌ | Mais Tu n'est pas ${me.tag} :thinking:**`);
+        if(message.author.id!==`${me.id}`)return message.reply(`**❌ | Mais Tu n'est pas ${me.tag} :thinking:**`);
         message.delete()
         var botmsg = args.join(" ");
         message.channel.send(botmsg)
@@ -172,52 +178,76 @@ bot.on('message', message => {
         //message.guild.channels.find("name", "modlog").send("Commande : uinfos / par :" + message.author.username + "#" + message.author.discriminator)
     }
 
-    if (message.content.startsWith(prefix + "ic")) {
-        var embedicmaintenance = new Discord.RichEmbed()
-            .setColor("0x8BCC14")
-            .setTitle(`Maintenance`)
-            .addField(`Une maintenance à lieu sur cette commande pour`, "Règlement de bugs divers et système de mute")
-            .addField(`Temps de la maintenance`, `Non définie`)
-            .setFooter("PandaBot")
-            .setTimestamp()
-        message.channel.sendEmbed(embedicmaintenance)
-        //if(message.author.id=='191907565230096386'){
-            //var rank = "Owner"
-        //}else{
-            //var rank = "Membre"
-        //}
+    //if(message.content.startsWith(prefix + "mtonic")) {
         //message.delete()
-        //if(message.author.id==`${pandabot.id}`) return message.channel.send("**❌ | Tu ne peux pas me faire dire n'importe quoi :rage:**")
-        //let icargs = message.content.split(" ").slice(1);
-        //let ic03 = icargs.join(" ")
-        //var ic02 = message.guild.channels.find('name', 'interchat');
-        //if(!ic02) return message.reply("**❌ | Le channel interchat est introuvable**")
-        //if(message.channel.name !== 'interchat') return message.reply("**❌ | Commande à effectuer dans interchat**")
-        //if(!ic03) return message.reply("**❌ | Merci de préciser un message**")
-        //var embedglobal = new Discord.RichEmbed()
-        //.setColor("0x8BCC14")
-        //.setTitle(`InterChat ${prefix}ic (message)`)
-        //.addField("Serveur", message.guild.name, true)
-        //.addField("Pseudo", message.author.username + "#" + message.author.discriminator, true)
-        //.addField("Rank", rank)
-        //.addField("Message", ic03)
-        //.setFooter("PandaBot")
-        //.setTimestamp()
-    //bot.channels.findAll('name', 'interchat').map(channel => channel.send(embedglobal))
-    //bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __ic__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** avec comme message **" + ic03 + "**"))
-    }
+        //if(message.author.id!=='191907565230096386')return message.reply(`**❌ | Mais Tu n'est pas ${me.tag} :thinking:**`);
+        //var aicmton = message.content.split(" ").slice(1);
+        //if(!aicmton) return message.reply("**❌ | Merci de préciser un message**")
+        //var icmt = "off";
+        //var embedicmaintenance = new Discord.RichEmbed()
+            //.setColor("0x8BCC14")
+            //.setTitle(`Maintenance`)
+            //.addField(`Une maintenance à lieu sur cette commande pour`, aicmton)
+            //.addField(`Temps de la maintenance`, `Non définie`)
+            //.setFooter("PandaBot", `${pandabot.displayAvatarURL}`)
+            //.setTimestamp()
+        //bot.channels.findAll('name', 'interchat').map(channel => channel.send(embedicmaintenance))
+    //}
 
-    if(message.content.startsWith(prefix + "icmaintenance")) {
-        message.delete()
-        if(message.author.id!=='191907565230096386')return message.reply(`**❌ | Mais Tu n'est pas ${me.tag} :thinking:**`);
-        var embedicmaintenance = new Discord.RichEmbed()
-            .setColor("0x8BCC14")
-            .setTitle(`Maintenance`)
-            .addField(`Une maintenance à lieu sur cette commande pour`, "Règlement de bugs divers et système de mute")
-            .addField(`Temps de la maintenance`, `Non définie`)
-            .setFooter("PandaBot")
-            .setTimestamp()
-        bot.channels.findAll('name', 'interchat').map(channel => channel.send(embedicmaintenance))
+    //if(message.content.startsWith(prefix + "mtoffic")) {
+        //message.delete()
+        //if(message.author.id!=='191907565230096386')return message.reply(`**❌ | Mais Tu n'est pas ${me.tag} :thinking:**`);
+        //var icmt = "on";
+        //var embedicmaintenance = new Discord.RichEmbed()
+            //.setColor("0x8BCC14")
+            //.setTitle(`Maintenance`)
+            //.addField(`La maintenance est fini`, "Merci à tous pour votre compréhension")
+            //.setFooter("PandaBot", `${pandabot.displayAvatarURL}`)
+            //.setTimestamp()
+        //bot.channels.findAll('name', 'interchat').map(channel => channel.send(embedicmaintenance))
+    //}
+
+    if (message.content.startsWith(prefix + "ic")) {
+        //message.channel.send(icmt)
+        //if( icmt == "on"){
+            if (message.author.id === "idofbanned" || message.author.id === "idofbanned") return message.channel.send("**❌ | Tu as été banni de l'interchat**");
+                //                      Banned id
+            if(message.author.id==`${me.id}`){
+                var rank = "Owner"
+            }else{
+                var rank = "Membre"
+            }
+            message.delete()
+            if(message.author.id==`${pandabot.id}`) return message.channel.send("**❌ | Tu ne peux pas me faire dire n'importe quoi :rage:**")
+            let icargs = message.content.split(" ").slice(1);
+            let ic03 = icargs.join(" ")
+            var ic02 = message.guild.channels.find('name', 'interchat');
+            if(!ic02) return message.reply("**❌ | Le channel interchat est introuvable**")
+            if(message.channel.name !== 'interchat') return message.reply("**❌ | Commande à effectuer dans interchat**")
+            if(!ic03) return message.reply("**❌ | Merci de préciser un message**")
+            if(icargs.some(e => e.toLowerCase()=="hack") || icargs.some(e => e.toLowerCase()=="www") || icargs.some(e => e.toLowerCase()==".fr") || icargs.some(e => e.toLowerCase()==".com") || icargs.some(e => e.toLowerCase()==".net") || icargs.some(e => e.toLowerCase()=="raid") || icargs.some(e => e.toLowerCase()=="discord")) return message.reply("**❌ | Ce message est interdit**")
+            var embedglobal = new Discord.RichEmbed()
+                .setColor("0x8BCC14")
+                .setAuthor(`InterChat ${prefix}ic (message)`, message.guild.iconURL)
+                .addField("Serveur", message.guild.name, true)
+                .addField("Pseudo", message.author.username + "#" + message.author.discriminator, true)
+                .addField("Rank", rank)
+                .addField("Message", ic03)
+                .setThumbnail(message.author.avatarURL)
+                .setFooter("PandaBot", `${pandabot.displayAvatarURL}`)
+                .setTimestamp()
+            bot.channels.findAll('name', 'interchat').map(channel => channel.send(embedglobal))
+            bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __ic__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** avec comme message **" + ic03 + "**"))
+        //} else if(icmt == "off") {
+            //var embedicmaintenance = new Discord.RichEmbed()
+                //.setColor("0x8BCC14")
+                //.setTitle(`Maintenance`)
+                //.addField(`Une maintenance à lieu sur cette commande pour`, aicmton)
+                //.addField(`Temps de la maintenance`, `Non définie`)
+                //.setFooter("PandaBot", `${pandabot.displayAvatarURL}`)
+                //.setTimestamp()
+            //message.channel.sendEmbed(embedicmaintenance)
+        //}
     }
 
     if(message.content.startsWith(prefix + "annonceall")) {
@@ -294,6 +324,7 @@ bot.on('message', message => {
 
     if(argsp.some(e => e==="pandabot")){
         if(message.author.id=='452925362599362570')return;
+        if(message.author.id==`${me.id}`) return message.channel.send("Je t'aime :heartpulse:")
         var emoji = bot.emojis.find("name", "ping")
         message.react(emoji)
         message.channel.send("Je suis occupé là laisse moi :rage:")
@@ -301,6 +332,7 @@ bot.on('message', message => {
 
     if(argsp.some(e => e==="PandaBot")){
         if(message.author.id=='452925362599362570')return;
+        if(message.author.id==`${me.id}`) return message.channel.send("Je t'aime :heartpulse:")
         var emoji = bot.emojis.find("name", "ping")
         message.react(emoji)
         message.channel.send("Je suis occupé là laisse moi :rage:")
@@ -308,6 +340,7 @@ bot.on('message', message => {
 
     if(argsp.some(e => e==="Pandabot")){
         if(message.author.id=='452925362599362570')return;
+        if(message.author.id==`${me.id}`) return message.channel.send("Je t'aime :heartpulse:")
         var emoji = bot.emojis.find("name", "ping")
         message.react(emoji)
         message.channel.send("Je suis occupé là laisse moi :rage:")
@@ -315,6 +348,7 @@ bot.on('message', message => {
 
     if(argsp.some(e => e==="PANDABOT")){
         if(message.author.id=='452925362599362570')return;
+        if(message.author.id==`${me.id}`) return message.channel.send("Je t'aime :heartpulse:")
         var emoji = bot.emojis.find("name", "ping")
         message.react(emoji)
         message.channel.send("Je suis occupé là laisse moi :rage:")
@@ -330,37 +364,13 @@ bot.on('message', message => {
         //}
     //}
 
-    if(argsp.some(e => e==="panda")){
+    if(argsp.some(e => e.toLowerCase()==="panda")){
         if(message.author.id=='452925362599362570')return;
         var emoji = bot.emojis.find("name", "PandaGeant")
         message.react(emoji)
     }
 
-    if(argsp.some(e => e==="Panda")){
-        if(message.author.id=='452925362599362570')return;
-        var emoji = bot.emojis.find("name", "PandaGeant")
-        message.react(emoji)
-    }
-
-    if(argsp.some(e => e==="PANDA")){
-        if(message.author.id=='452925362599362570')return;
-        var emoji = bot.emojis.find("name", "PandaGeant")
-        message.react(emoji)
-    }
-
-    if(argsp.some(e => e==="Kappa")){
-        if(message.author.id=='452925362599362570')return;
-        var emoji = bot.emojis.find("name", "pbkappa")
-        message.react(emoji)
-    }
-
-    if(argsp.some(e => e==="KAPPA")){
-        if(message.author.id=='452925362599362570')return;
-        var emoji = bot.emojis.find("name", "pbkappa")
-        message.react(emoji)
-    }
-
-    if(argsp.some(e => e==="kappa")){
+    if(argsp.some(e => e.toLowerCase()==="kappa")){
         if(message.author.id=='452925362599362570')return;
         var emoji = bot.emojis.find("name", "pbkappa")
         message.react(emoji)
@@ -371,91 +381,31 @@ bot.on('message', message => {
         message.channel.send("Voici un panda " + emoji)
     }
 
-    if(argsp.some(e => e==="loser")){
+    if(argsp.some(e => e.toLowerCase()==="loser")){
         if(message.author.id=='452925362599362570')return;
         var emoji = bot.emojis.find("name", "pbTakeTheL")
         message.react(emoji)
     }
 
-    if(argsp.some(e => e==="LOSER")){
-        if(message.author.id=='452925362599362570')return;
-        var emoji = bot.emojis.find("name", "pbTakeTheL")
-        message.react(emoji)
-    }
-
-    if(argsp.some(e => e==="Loser")){
-        if(message.author.id=='452925362599362570')return;
-        var emoji = bot.emojis.find("name", "pbTakeTheL")
-        message.react(emoji)
-    }
-
-    if(argsp.some(e => e==="Ah")){
+    if(argsp.some(e => e.toLowerCase()==="ah")){
         if(message.author.id=='452925362599362570')return;
         var emoji = bot.emojis.find("name", "pbAH")
         message.react(emoji)
     }
 
-    if(argsp.some(e => e==="ah")){
-        if(message.author.id=='452925362599362570')return;
-        var emoji = bot.emojis.find("name", "pbAH")
-        message.react(emoji)
-    }
-
-    if(argsp.some(e => e==="AH")){
-        if(message.author.id=='452925362599362570')return;
-        var emoji = bot.emojis.find("name", "pbAH")
-        message.react(emoji)
-    }
-
-    if(argsp.some(e => e==="Nani")){
+    if(argsp.some(e => e.toLowerCase()==="nani")){
         if(message.author.id=='452925362599362570')return;
         var emoji = bot.emojis.find("name", "pbNani")
         message.react(emoji)
     }
 
-    if(argsp.some(e => e==="nani")){
-        if(message.author.id=='452925362599362570')return;
-        var emoji = bot.emojis.find("name", "pbNani")
-        message.react(emoji)
-    }
-
-    if(argsp.some(e => e==="NANI")){
-        if(message.author.id=='452925362599362570')return;
-        var emoji = bot.emojis.find("name", "pbNani")
-        message.react(emoji)
-    }
-
-    if(argsp.some(e => e==="Ban")){
+    if(argsp.some(e => e.toLowerCase()==="ban")){
         if(message.author.id=='452925362599362570')return;
         var emoji = bot.emojis.find("name", "pbMonokumaBan")
         message.react(emoji)
     }
 
-    if(argsp.some(e => e==="ban")){
-        if(message.author.id=='452925362599362570')return;
-        var emoji = bot.emojis.find("name", "pbMonokumaBan")
-        message.react(emoji)
-    }
-
-    if(argsp.some(e => e==="BAN")){
-        if(message.author.id=='452925362599362570')return;
-        var emoji = bot.emojis.find("name", "pbMonokumaBan")
-        message.react(emoji)
-    }
-
-    if(argsp.some(e => e==="Fortnite")){
-        if(message.author.id=='452925362599362570')return;
-        var emoji = bot.emojis.find("name", "pbfertnite")
-        message.react(emoji)
-    }
-
-    if(argsp.some(e => e==="fortnite")){
-        if(message.author.id=='452925362599362570')return;
-        var emoji = bot.emojis.find("name", "pbfertnite")
-        message.react(emoji)
-    }
-
-    if(argsp.some(e => e==="FORTNITE")){
+    if(argsp.some(e => e.toLowerCase()==="fortnite")){
         if(message.author.id=='452925362599362570')return;
         var emoji = bot.emojis.find("name", "pbfertnite")
         message.react(emoji)
@@ -626,6 +576,7 @@ bot.on('message', message => {
             //}
         //}
     //}
+
 });
 
 bot.on('guildMemberAdd', member => {
