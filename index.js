@@ -33,7 +33,7 @@ bot.on('message', message => {
             .addField("Prefix", `${prefix}`)
             .addField("Commandes du bot !", "- help : Affiche les commandes du bot \n- uinfos : Montre les infos de la personne \n- ic : InterChat (chat entre les serveurs qui ont le channel interchat) \n- url : raccourcisseur de lien \n- afk : système d'afk \n- servlist : affiche la liste des serveurs du bot \n- mc : affiche le nombre de membres sur votre serveur \n- invite : lien pour inviter le bot sur votre serveur")
             .addField("Fun", "- ask : Poser une question (réponse par oui ou non) \n- avatar : Montre l'avatar de la personne \n- say : Fait parler le bot (perm admin requise) \n- hug : Faire un câlin à quelqu'un \n- kiss : faire un bisous à quelqu'un \n- panda : montre un panda \n- frog : fait apparaitre une grenouille \n- hack : hacker quelqu'un \n- aurevoir : dire aurevoir ^^ \n- fakeban : ban quelqu'un \n- roll : faire un chiffre entre 0 et 100 \n- gif : cherche un gif \n- calc : fait un calcul")
-            .addField("Informations", `Bot créé par ${me.tag}, Version ${version}`)
+            .addField("Informations", `Bot créé par ${me.tag}, Version ${version}, sur ${bot.guilds.size} serveurs`)
             .addField("Réseaux Sociaux", "[YouTube](https://youtube.com/c/CallMeGodness) [Twitter](https://twitter.com/CallMeGodness_)")
             .setFooter(`PandaBot`, `${pandabot.displayAvatarURL}`)
             .setTimestamp()
@@ -45,7 +45,7 @@ bot.on('message', message => {
     if(message.content.startsWith(prefix + "invite")){
         var embedinv = new Discord.RichEmbed()
             .setColor('#E81414')
-            .addField("Merci " + message.author.username + " de faire confiance au pandabot et à son créateur " + me.tag, `[Invitation](https://discordapp.com/oauth2/authorize?client_id=${pandabot.id}&scope=bot&permissions=8)`)
+            .addField(`Merci ${message.author.username} de faire confiance au pandabot et à son créateur ${me.tag} déjà ${bot.guilds.size} serveurs nous font confiance`, `[Invitation](https://discordapp.com/oauth2/authorize?client_id=${pandabot.id}&scope=bot&permissions=8)`)
             .setImage("https://cdn.discordapp.com/attachments/381578923294720000/518879495277772837/merce.png")
         message.channel.send(embedinv)
         bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __invite__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "**"))
@@ -584,7 +584,9 @@ bot.on('message', message => {
     }
 
     if(message.content.startsWith(prefix + "servlist")) {
-        message.channel.send(bot.guilds.map(r => r.name + ` | **${r.memberCount}** membres`))
+        console.log(bot.guilds.map(r => r.name + ` | ${r.memberCount} membres`))
+        console.log(`${bot.guilds.size} serveurs | ${bot.users.size} membres`)
+        message.channel.send("La liste des serveurs à été envoyé dans la console")
         message.channel.send(`**${bot.guilds.size} serveurs | ${bot.users.size} membres**`)
         bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __servlist__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "**"))
     }
