@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const Cleverbot = require("cleverbot-node");
 const shorten = require('isgd');
+const math = require('mathjs');
 const fetch = require('node-fetch');
 var mysql = require('mysql');
 var apikey = "UvgdLgy6ZnYj8zGKJ2VtX8SEjoCnQNTl"
@@ -29,8 +30,8 @@ bot.on('message', message => {
             var help_embed = new Discord.RichEmbed()
             .setColor('#E81414')
             .addField("Prefix", `${prefix}`)
-            .addField("Commandes du bot !", "- help : Affiche les commandes du bot \n- uinfos : Montre les infos de la personne \n- ic : InterChat (chat entre les serveurs qui ont le channel interchat) \n- url : raccourcisseur de lien \n- afk : système d'afk \n- servlist : affiche la liste des serveurs du bot \n- mc : affiche le nombre de membres sur votre serveur \n- gif : cherche un gif")
-            .addField("Fun", "- ask : Poser une question (réponse par oui ou non) \n- avatar : Montre l'avatar de la personne \n- say : Fait parler le bot (perm admin requise) \n- hug : Faire un câlin à quelqu'un \n- kiss : faire un bisous à quelqu'un \n- panda : montre un panda \n- frog : fait apparaitre une grenouille \n- hack : hacker quelqu'un \n- aurevoir : dire aurevoir ^^ \n- fakeban : ban quelqu'un \n- roll : faire un chiffre entre 0 et 100")
+            .addField("Commandes du bot !", "- help : Affiche les commandes du bot \n- uinfos : Montre les infos de la personne \n- ic : InterChat (chat entre les serveurs qui ont le channel interchat) \n- url : raccourcisseur de lien \n- afk : système d'afk \n- servlist : affiche la liste des serveurs du bot \n- mc : affiche le nombre de membres sur votre serveur")
+            .addField("Fun", "- ask : Poser une question (réponse par oui ou non) \n- avatar : Montre l'avatar de la personne \n- say : Fait parler le bot (perm admin requise) \n- hug : Faire un câlin à quelqu'un \n- kiss : faire un bisous à quelqu'un \n- panda : montre un panda \n- frog : fait apparaitre une grenouille \n- hack : hacker quelqu'un \n- aurevoir : dire aurevoir ^^ \n- fakeban : ban quelqu'un \n- roll : faire un chiffre entre 0 et 100 \n- gif : cherche un gif \n- calc : fait un calcul")
             .addField("Informations", `Bot créé par ${me.tag}`)
             .addField("Réseaux Sociaux", "[YouTube](https://youtube.com/c/CallMeGodness) [Twitter](https://twitter.com/CallMeGodness_)")
             .setFooter(`PandaBot`, `${pandabot.displayAvatarURL}`)
@@ -38,6 +39,23 @@ bot.on('message', message => {
             channel.sendEmbed(help_embed);
             bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __help__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "**"))
         })
+    }
+
+    if (message.content.startsWith(prefix + "calc")){
+        var args = message.content.split(" ").slice(1);
+        if(!args[0]) return message.channel.send(`**❌ | il faut préciser un calcul**`)
+        let resp;
+        try {
+            resp = math.eval(args);
+        } catch (e) {
+            return message.channel.send("**❌ | Ce n'est pas un calcul valide**");
+        }
+        const embedmath = new Discord.RichEmbed()
+            .setColor(0xffffff)
+            .setTitle("Calculatrice")
+            .addField('Calcul de base', `\`\`\`js\n${args.join('')}\`\`\``)
+            .addField('Résultat', `\`\`\`js\n${resp}\`\`\``)
+        message.channel.send(embedmath)
     }
 
     if (message.content.startsWith(prefix + "gif")){
