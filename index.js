@@ -10,9 +10,10 @@ var bot = new Discord.Client();
 var prefix = ("pb!");
 var randum = 0;
 var randum2 = 0;
+var version = "1.0"
 
 bot.on('ready', () => {
-    bot.user.setPresence({ game: { name: `Manger du bambou | ${prefix}help | ${bot.guilds.size} serveurs`, type: 0}})
+    bot.user.setPresence({ game: { name: `Manger du bambou | ${prefix}help | Version ${version}`, type: 0}})
     bot.user.setStatus("dnd");
     console.log("Bot Prêt !");
 });
@@ -30,15 +31,24 @@ bot.on('message', message => {
             var help_embed = new Discord.RichEmbed()
             .setColor('#E81414')
             .addField("Prefix", `${prefix}`)
-            .addField("Commandes du bot !", "- help : Affiche les commandes du bot \n- uinfos : Montre les infos de la personne \n- ic : InterChat (chat entre les serveurs qui ont le channel interchat) \n- url : raccourcisseur de lien \n- afk : système d'afk \n- servlist : affiche la liste des serveurs du bot \n- mc : affiche le nombre de membres sur votre serveur")
+            .addField("Commandes du bot !", "- help : Affiche les commandes du bot \n- uinfos : Montre les infos de la personne \n- ic : InterChat (chat entre les serveurs qui ont le channel interchat) \n- url : raccourcisseur de lien \n- afk : système d'afk \n- servlist : affiche la liste des serveurs du bot \n- mc : affiche le nombre de membres sur votre serveur \n- invite : lien pour inviter le bot sur votre serveur")
             .addField("Fun", "- ask : Poser une question (réponse par oui ou non) \n- avatar : Montre l'avatar de la personne \n- say : Fait parler le bot (perm admin requise) \n- hug : Faire un câlin à quelqu'un \n- kiss : faire un bisous à quelqu'un \n- panda : montre un panda \n- frog : fait apparaitre une grenouille \n- hack : hacker quelqu'un \n- aurevoir : dire aurevoir ^^ \n- fakeban : ban quelqu'un \n- roll : faire un chiffre entre 0 et 100 \n- gif : cherche un gif \n- calc : fait un calcul")
-            .addField("Informations", `Bot créé par ${me.tag}`)
+            .addField("Informations", `Bot créé par ${me.tag}, Version ${version}`)
             .addField("Réseaux Sociaux", "[YouTube](https://youtube.com/c/CallMeGodness) [Twitter](https://twitter.com/CallMeGodness_)")
             .setFooter(`PandaBot`, `${pandabot.displayAvatarURL}`)
             .setTimestamp()
             channel.sendEmbed(help_embed);
             bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __help__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "**"))
         })
+    }
+
+    if(message.content.startsWith(prefix + "invite")){
+        var embedinv = new Discord.RichEmbed()
+            .setColor('#E81414')
+            .addField("Merci " + message.author.username + " de faire confiance au pandabot et à son créateur " + me.tag, `[Invitation](https://discordapp.com/oauth2/authorize?client_id=${pandabot.id}&scope=bot&permissions=8)`)
+            .setImage("https://cdn.discordapp.com/attachments/381578923294720000/518879495277772837/merce.png")
+        message.channel.send(embedinv)
+        bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __invite__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "**"))
     }
 
     if (message.content.startsWith(prefix + "calc")){
@@ -50,12 +60,12 @@ bot.on('message', message => {
         } catch (e) {
             return message.channel.send("**❌ | Ce n'est pas un calcul valide**");
         }
-        const embedmath = new Discord.RichEmbed()
+        var embedmath = new Discord.RichEmbed()
             .setColor(0xffffff)
-            .setTitle("Calculatrice")
             .addField('Calcul de base', `\`\`\`js\n${args.join('')}\`\`\``)
             .addField('Résultat', `\`\`\`js\n${resp}\`\`\``)
         message.channel.send(embedmath)
+        bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __calc__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** avec comme calcul **" + args + "** et comme résultat **" + resp + "**"))
     }
 
     if (message.content.startsWith(prefix + "gif")){
