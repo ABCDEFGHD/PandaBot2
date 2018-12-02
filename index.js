@@ -225,7 +225,14 @@ bot.on('message', message => {
             if(!ic02) return message.reply("**❌ | Le channel interchat est introuvable**")
             if(message.channel.name !== 'interchat') return message.reply("**❌ | Commande à effectuer dans interchat**")
             if(!ic03) return message.reply("**❌ | Merci de préciser un message**")
-            if(icargs.some(e => e.toLowerCase()=="hack") || icargs.some(e => e.toLowerCase()=="www") || icargs.some(e => e.toLowerCase()==".fr") || icargs.some(e => e.toLowerCase()==".com") || icargs.some(e => e.toLowerCase()==".net") || icargs.some(e => e.toLowerCase()=="raid") || icargs.some(e => e.toLowerCase()=="discord")) return message.reply("**❌ | Ce message est interdit**")
+            let blacklisted = ['https://', 'http://', 'raid', 'discord', 'hack']
+            let foundInText = false
+            for (var i in blacklisted) {
+                if (message.content.toLowerCase().includes(blacklisted[i].toLowerCase())) foundInText = true;
+            }
+            if (foundInText) {
+                message.channel.send("**❌ | Un mot dans votre phrase est blacklist**");
+            } else {
             var embedglobal = new Discord.RichEmbed()
                 .setColor("0x8BCC14")
                 .setAuthor(`InterChat ${prefix}ic (message)`, message.guild.iconURL)
@@ -238,6 +245,7 @@ bot.on('message', message => {
                 .setTimestamp()
             bot.channels.findAll('name', 'interchat').map(channel => channel.send(embedglobal))
             bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __ic__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** avec comme message **" + ic03 + "**"))
+            }
         //} else if(icmt == "off") {
             //var embedicmaintenance = new Discord.RichEmbed()
                 //.setColor("0x8BCC14")
