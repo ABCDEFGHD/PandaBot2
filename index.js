@@ -35,7 +35,7 @@ bot.on('message', message => {
                 .addField("Commandes du bot !", "- help : Affiche les commandes du bot \n- uinfos : Montre les infos de la personne \n- ic : InterChat (chat entre les serveurs qui ont le channel interchat) \n- url : raccourcisseur de lien \n- afk : système d'afk \n- servlist : affiche la liste des serveurs du bot \n- mc : affiche le nombre de membres sur votre serveur \n- invite : lien pour inviter le bot sur votre serveur")
                 .addField("Fun", "- ask : Poser une question (réponse par oui ou non) \n- avatar : Montre l'avatar de la personne \n- say : Fait parler le bot (perm admin requise) \n- hug : Faire un câlin à quelqu'un \n- kiss : faire un bisous à quelqu'un \n- panda : montre un panda \n- frog : fait apparaitre une grenouille \n- hack : hacker quelqu'un \n- aurevoir : dire aurevoir ^^ \n- fakeban : ban quelqu'un \n- roll : faire un chiffre entre 0 et 100 \n- gif : cherche un gif \n- calc : fait un calcul")
                 .addField("Informations", `Bot créé par ${me.tag}, Version ${version}, sur ${bot.guilds.size} serveurs`)
-                .addField("Réseaux Sociaux", "[YouTube](https://youtube.com/c/CallMeGodness) [Twitter](https://twitter.com/CallMeGodness_)")
+                .addField("Réseaux Sociaux", "[YouTube](https://youtube.com/c/CallMeGodness) [Twitter](https://twitter.com/CallMePandaYT)")
                 .setFooter(`PandaBot`, `${pandabot.displayAvatarURL}`)
                 .setTimestamp()
             channel.sendEmbed(help_embed);
@@ -45,6 +45,7 @@ bot.on('message', message => {
 
     if(message.content.startsWith(prefix + "patch")){
         if(message.author.id!==`${me.id}`)return message.reply(epref + `Mais Tu n'est pas ${me.tag} :thinking:**`);
+        message.delete()
         var patch_embed = new Discord.RichEmbed()
             .setColor('#3DBFCB')
             .addField(`Patch Notes, Version ${version}`, `- Ajout du patch notes \n- Optimisation du code`)
