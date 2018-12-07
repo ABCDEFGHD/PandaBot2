@@ -10,7 +10,8 @@ var bot = new Discord.Client();
 var prefix = ("pb!");
 var randum = 0;
 var randum2 = 0;
-var version = "1.0"
+var version = "1.0.1"
+var epref = "**❌ | "
 
 bot.on('ready', () => {
     bot.user.setPresence({ game: { name: `Manger du bambou | ${prefix}help | Version ${version}`, type: 0}})
@@ -29,17 +30,27 @@ bot.on('message', message => {
         message.reply(":white_check_mark: Menu de help envoyé en privé")
         message.author.createDM().then(function (channel){
             var help_embed = new Discord.RichEmbed()
-            .setColor('#E81414')
-            .addField("Prefix", `${prefix}`)
-            .addField("Commandes du bot !", "- help : Affiche les commandes du bot \n- uinfos : Montre les infos de la personne \n- ic : InterChat (chat entre les serveurs qui ont le channel interchat) \n- url : raccourcisseur de lien \n- afk : système d'afk \n- servlist : affiche la liste des serveurs du bot \n- mc : affiche le nombre de membres sur votre serveur \n- invite : lien pour inviter le bot sur votre serveur")
-            .addField("Fun", "- ask : Poser une question (réponse par oui ou non) \n- avatar : Montre l'avatar de la personne \n- say : Fait parler le bot (perm admin requise) \n- hug : Faire un câlin à quelqu'un \n- kiss : faire un bisous à quelqu'un \n- panda : montre un panda \n- frog : fait apparaitre une grenouille \n- hack : hacker quelqu'un \n- aurevoir : dire aurevoir ^^ \n- fakeban : ban quelqu'un \n- roll : faire un chiffre entre 0 et 100 \n- gif : cherche un gif \n- calc : fait un calcul")
-            .addField("Informations", `Bot créé par ${me.tag}, Version ${version}, sur ${bot.guilds.size} serveurs`)
-            .addField("Réseaux Sociaux", "[YouTube](https://youtube.com/c/CallMeGodness) [Twitter](https://twitter.com/CallMeGodness_)")
-            .setFooter(`PandaBot`, `${pandabot.displayAvatarURL}`)
-            .setTimestamp()
+                .setColor('#E81414')
+                .addField("Prefix", `${prefix}`)
+                .addField("Commandes du bot !", "- help : Affiche les commandes du bot \n- uinfos : Montre les infos de la personne \n- ic : InterChat (chat entre les serveurs qui ont le channel interchat) \n- url : raccourcisseur de lien \n- afk : système d'afk \n- servlist : affiche la liste des serveurs du bot \n- mc : affiche le nombre de membres sur votre serveur \n- invite : lien pour inviter le bot sur votre serveur")
+                .addField("Fun", "- ask : Poser une question (réponse par oui ou non) \n- avatar : Montre l'avatar de la personne \n- say : Fait parler le bot (perm admin requise) \n- hug : Faire un câlin à quelqu'un \n- kiss : faire un bisous à quelqu'un \n- panda : montre un panda \n- frog : fait apparaitre une grenouille \n- hack : hacker quelqu'un \n- aurevoir : dire aurevoir ^^ \n- fakeban : ban quelqu'un \n- roll : faire un chiffre entre 0 et 100 \n- gif : cherche un gif \n- calc : fait un calcul")
+                .addField("Informations", `Bot créé par ${me.tag}, Version ${version}, sur ${bot.guilds.size} serveurs`)
+                .addField("Réseaux Sociaux", "[YouTube](https://youtube.com/c/CallMeGodness) [Twitter](https://twitter.com/CallMeGodness_)")
+                .setFooter(`PandaBot`, `${pandabot.displayAvatarURL}`)
+                .setTimestamp()
             channel.sendEmbed(help_embed);
             bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __help__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "**"))
         })
+    }
+
+    if(message.content.startsWith(prefix + "patch")){
+        if(message.author.id!==`${me.id}`)return message.reply(epref + `Mais Tu n'est pas ${me.tag} :thinking:**`);
+        var patch_embed = new Discord.RichEmbed()
+            .setColor('#3DBFCB')
+            .addField(`Patch Notes, Version ${version}`, `- Ajout du patch notes \n- Optimisation du code`)
+            .setFooter(`PandaBot`, `${pandabot.displayAvatarURL}`)
+            .setTimestamp()
+        message.channel.sendEmbed(patch_embed);
     }
 
     if(message.content.startsWith(prefix + "invite")){
@@ -53,12 +64,12 @@ bot.on('message', message => {
 
     if (message.content.startsWith(prefix + "calc")){
         var args = message.content.split(" ").slice(1);
-        if(!args[0]) return message.channel.send(`**❌ | il faut préciser un calcul**`)
+        if(!args[0]) return message.channel.send(epref + `il faut préciser un calcul**`)
         let resp;
         try {
             resp = math.eval(args);
         } catch (e) {
-            return message.channel.send("**❌ | Ce n'est pas un calcul valide**");
+            return message.channel.send(epref + "Ce n'est pas un calcul valide**");
         }
         var embedmath = new Discord.RichEmbed()
             .setColor(0xffffff)
@@ -70,7 +81,7 @@ bot.on('message', message => {
 
     if (message.content.startsWith(prefix + "gif")){
         var args = message.content.split(" ").slice(1);
-        if(!args[0]) return message.channel.send(`**❌ | il faut faire ${prefix}gif <recherche>**`)
+        if(!args[0]) return message.channel.send(epref + `il faut faire ${prefix}gif <recherche>**`)
             fetch('http://api.giphy.com/v1/stickers/search?api_key=' + apikey + '&q=' + args)
             .then(res => res.json())
             .then(body => {
@@ -79,7 +90,7 @@ bot.on('message', message => {
             })
             .catch(err => {
                 console.log(err)
-                message.channel.send("Erreur: Cette recherche ne donne rien")
+                message.channel.send(epref + "Cette recherche ne donne rien**")
             })
     }
 
@@ -96,7 +107,7 @@ bot.on('message', message => {
 
     if (message.content.startsWith(prefix + "say")){
         var args = message.content.split(" ").slice(1);
-        if(!message.member.hasPermission("ADMINISTRATOR")) return message.reply("**❌ | Tu n'as pas la permission ADMINISTRATOR**");
+        if(!message.member.hasPermission("ADMINISTRATOR")) return message.reply(epref + "Tu n'as pas la permission ADMINISTRATOR**");
         message.delete()
         var botmsg = args.join(" ");
         message.channel.send(botmsg)
@@ -106,7 +117,7 @@ bot.on('message', message => {
 
     if (message.content.startsWith(prefix + "forcesay")){
         var args = message.content.split(" ").slice(1);
-        if(message.author.id!==`${me.id}`)return message.reply(`**❌ | Mais Tu n'est pas ${me.tag} :thinking:**`);
+        if(message.author.id!==`${me.id}`)return message.reply(epref + `Mais Tu n'est pas ${me.tag} :thinking:**`);
         message.delete()
         var botmsg = args.join(" ");
         message.channel.send(botmsg)
@@ -117,7 +128,7 @@ bot.on('message', message => {
     if (message.content.startsWith(prefix + "ask")){
         let askargs = message.content.split(" ").slice(1);
         let ask1 = askargs.join(" ")
-        if(!ask1) return message.channel.sendMessage("**❌ | Merci de préciser une question**")
+        if(!ask1) return message.channel.sendMessage(epref + "Merci de préciser une question**")
         random();
         if (randum == 1){
             var askres = "Oui"
@@ -170,7 +181,7 @@ bot.on('message', message => {
     }
 
     if (message.content.startsWith(prefix + "avatar")) {
-        if (!message.mentions.users.first()) return message.channel.send("**❌ | Entrez un utilisateur.**")
+        if (!message.mentions.users.first()) return message.channel.send(epref + "Entrez un utilisateur.**")
             let user = message.mentions.users.first() ? message.mentions.users.first() : message.author
             let ava = user.displayAvatarURL
             let embed = {
@@ -188,7 +199,7 @@ bot.on('message', message => {
     }
 
     if(message.content.startsWith(prefix + "uinfos")) {
-        if (!message.mentions.users.first()) return message.channel.send("** ❌ | Entrez un utilisateur.**")
+        if (!message.mentions.users.first()) return message.channel.send(epref + "Entrez un utilisateur.**")
         let User = message.guild.member(message.mentions.users.first() || message.guild.members.get(arguments[0]));
         let uinfoEmbed = new Discord.RichEmbed()
         .setDescription("__UserInfo__")
@@ -238,7 +249,7 @@ bot.on('message', message => {
     if (message.content.startsWith(prefix + "ic")) {
         //message.channel.send(icmt)
         //if( icmt == "on"){
-            if (message.author.id === "idofbanned" || message.author.id === "idofbanned") return message.channel.send("**❌ | Tu as été banni de l'interchat**");
+            if (message.author.id === "idofbanned" || message.author.id === "idofbanned") return message.channel.send(epref + "Tu as été banni de l'interchat**");
                 //                      Banned id
             if(message.author.id==`${me.id}`){
                 var rank = "Owner"
@@ -246,20 +257,20 @@ bot.on('message', message => {
                 var rank = "Membre"
             }
             message.delete()
-            if(message.author.id==`${pandabot.id}`) return message.channel.send("**❌ | Tu ne peux pas me faire dire n'importe quoi :rage:**")
+            if(message.author.id==`${pandabot.id}`) return message.channel.send(epref + "Tu ne peux pas me faire dire n'importe quoi :rage:**")
             let icargs = message.content.split(" ").slice(1);
             let ic03 = icargs.join(" ")
             var ic02 = message.guild.channels.find('name', 'interchat');
-            if(!ic02) return message.reply("**❌ | Le channel interchat est introuvable**")
-            if(message.channel.name !== 'interchat') return message.reply("**❌ | Commande à effectuer dans interchat**")
-            if(!ic03) return message.reply("**❌ | Merci de préciser un message**")
+            if(!ic02) return message.reply(epref + "Le channel interchat est introuvable**")
+            if(message.channel.name !== 'interchat') return message.reply(epref + "Commande à effectuer dans interchat**")
+            if(!ic03) return message.reply(epref + "Merci de préciser un message**")
             let blacklisted = ['https://', 'http://', 'raid', 'discord', 'hack']
             let foundInText = false
             for (var i in blacklisted) {
                 if (message.content.toLowerCase().includes(blacklisted[i].toLowerCase())) foundInText = true;
             }
             if (foundInText) {
-                message.channel.send("**❌ | Un mot dans votre phrase est blacklist**");
+                message.channel.send(epref + "Un mot dans votre phrase est blacklist**");
             } else {
             var embedglobal = new Discord.RichEmbed()
                 .setColor("0x8BCC14")
@@ -287,11 +298,11 @@ bot.on('message', message => {
     }
 
     if(message.content.startsWith(prefix + "annonceall")) {
-        if(message.author.id!=='191907565230096386')return message.reply(`**❌ | Mais Tu n'est pas ${me.tag} :thinking:**`);
+        if(message.author.id!=='191907565230096386')return message.reply(epref + `Mais Tu n'est pas ${me.tag} :thinking:**`);
         message.delete()
         let aallargs = message.content.split(" ").slice(1);
         let aall = aallargs.join(" ")
-        if(!aall) return message.reply("**❌ | Merci de préciser un message**")
+        if(!aall) return message.reply(epref + "Merci de préciser un message**")
         bot.channels.findAll('name', 'annonce').map(channel => channel.send(aall))
         bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __annonceall__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** avec comme message **" + aall + "**"))
     }
@@ -338,7 +349,7 @@ bot.on('message', message => {
         if(!args[0]) return message.channel.send(`**❌ | il faut faire ${prefix}url <URL>**`)
         if(!args[1]) {
             shorten.shorten(args[0], function(res) {
-                if(res.startsWith('Error:')) return message.channel.send('**❌ | tu dois mettre un lien valide**');
+                if(res.startsWith('Error:')) return message.channel.send(epref + 'tu dois mettre un lien valide**');
                 message.channel.send(`**<${res}>**`);
                 bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __url__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** avec comme url de base **" + args + "** pour finir en **" + res + "**"))
             })
@@ -359,30 +370,6 @@ bot.on('message', message => {
     }
 
     if(argsp.some(e => e==="pandabot")){
-        if(message.author.id=='452925362599362570')return;
-        if(message.author.id==`${me.id}`) return message.channel.send("Je t'aime :heartpulse:")
-        var emoji = bot.emojis.find("name", "ping")
-        message.react(emoji)
-        message.channel.send("Je suis occupé là laisse moi :rage:")
-    }
-
-    if(argsp.some(e => e==="PandaBot")){
-        if(message.author.id=='452925362599362570')return;
-        if(message.author.id==`${me.id}`) return message.channel.send("Je t'aime :heartpulse:")
-        var emoji = bot.emojis.find("name", "ping")
-        message.react(emoji)
-        message.channel.send("Je suis occupé là laisse moi :rage:")
-    }
-
-    if(argsp.some(e => e==="Pandabot")){
-        if(message.author.id=='452925362599362570')return;
-        if(message.author.id==`${me.id}`) return message.channel.send("Je t'aime :heartpulse:")
-        var emoji = bot.emojis.find("name", "ping")
-        message.react(emoji)
-        message.channel.send("Je suis occupé là laisse moi :rage:")
-    }
-
-    if(argsp.some(e => e==="PANDABOT")){
         if(message.author.id=='452925362599362570')return;
         if(message.author.id==`${me.id}`) return message.channel.send("Je t'aime :heartpulse:")
         var emoji = bot.emojis.find("name", "ping")
@@ -493,7 +480,7 @@ bot.on('message', message => {
     if(message.content.startsWith(prefix + "hack")) {
         let hacks = message.mentions.users.first();
         if (message.mentions.users.size < 1) {
-          message.channel.send("**❌ | tu dois préciser une personne à hacker**")
+          message.channel.send(epref + "tu dois préciser une personne à hacker**")
         } else {
             message.channel.startTyping();
             message.delete()
@@ -525,14 +512,14 @@ bot.on('message', message => {
     }
     fs.writeFile("./afks.json", JSON.stringify(afk), (err) => { if (err) console.error(err);});
     }else{
-    msg.channel.send("**❌ | Tu es déjà afk**");
+    msg.channel.send(epref + "Tu es déjà afk**");
     }
     }
     
     
     if (msg.content.startsWith(prefix + "afk")||msg.content === prefix + "afk") {
     if (afk[msg.author.id]) {
-    return message.channel.send("**❌ | Tu es déjà afk**");
+    return message.channel.send(epref + "Tu es déjà afk**");
     }else{
     let args1 = msg.content.split(" ").slice(1);
     if (args1.length === 0) {
@@ -572,7 +559,7 @@ bot.on('message', message => {
         message.delete()
         let fban = message.mentions.users.first();
         if (message.mentions.users.size < 1) {
-            message.channel.send("**❌ | Tu dois préciser quelqu'un à ban**")
+            message.channel.send(epref + "Tu dois préciser quelqu'un à ban**")
         } else {
             let embedban = new Discord.RichEmbed()
               .setTitle(message.author.username + ` a ban ${fban.username}`)
