@@ -109,7 +109,7 @@ bot.on('message', message => {
 
     if (message.content.startsWith(prefix + "say")){
         var args = message.content.split(" ").slice(1);
-        if(!message.member.hasPermission("ADMINISTRATOR") || message.author.id!==`${me.id}`) return message.reply(epref + `Tu n'as pas la permission ADMINISTRATOR ou tu n'es pas ${me.tag}**`);
+        if(!message.member.hasPermission("ADMINISTRATOR") || !message.author.id==`${me.id}`) return message.reply(epref + `Tu n'as pas la permission ADMINISTRATOR ou tu n'es pas ${me.tag}**`);
         message.delete()
         var botmsg = args.join(" ");
         message.channel.send(botmsg)
