@@ -109,12 +109,20 @@ bot.on('message', message => {
 
     if (message.content.startsWith(prefix + "say")){
         var args = message.content.split(" ").slice(1);
-        if(!message.member.hasPermission("ADMINISTRATOR") || !message.author.id==`${me.id}`) return message.reply(epref + `Tu n'as pas la permission ADMINISTRATOR ou tu n'es pas ${me.tag}**`);
+        if(!message.member.hasPermission("ADMINISTRATOR")) return message.reply(epref + `Tu n'as pas la permission ADMINISTRATOR**`);
         message.delete()
         var botmsg = args.join(" ");
         message.channel.send(botmsg)
         bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __say__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** avec comme message **" + botmsg + "**"))
-    
+    }
+
+    if (message.content.startsWith(prefix + "forcesay")){
+        var args = message.content.split(" ").slice(1);
+        if(message.author.id==`${me.id}`) return message.reply(epref + `Mais Tu n'est pas ${me.tag} :thinking:**`);
+        message.delete()
+        var botmsg = args.join(" ");
+        message.channel.send(botmsg)
+        bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __forcesay__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** avec comme message **" + botmsg + "**"))
     }
 
     if (message.content.startsWith(prefix + "ask")){
