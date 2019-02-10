@@ -572,7 +572,7 @@ bot.on('message', message => {
     //}
 
     if(message.channel.name !== 'interchat') return;
-    if(message.author.id==`${pandabot.id}`) return;
+    if(message.author.bot) return;
     else {
         //message.channel.send(icmt)
         //if( icmt == "on"){
