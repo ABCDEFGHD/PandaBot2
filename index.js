@@ -10,7 +10,7 @@ var bot = new Discord.Client();
 var prefix = ("pb!");
 var randum = 0;
 var randum2 = 0;
-var version = "1.0.2"
+var version = "1.0.3"
 var epref = "**❌ | "
 
 bot.on('ready', () => {
@@ -32,9 +32,9 @@ bot.on('message', message => {
             var help_embed = new Discord.RichEmbed()
                 .setColor('#E81414')
                 .addField("Prefix", `${prefix}`)
-                .addField("Commandes du bot !", "- help : Affiche les commandes du bot \n- uinfos : Montre les infos de la personne \n- url : raccourcisseur de lien \n- afk : système d'afk \n- servlist : affiche la liste des serveurs du bot \n- mc : affiche le nombre de membres sur votre serveur \n- invite : lien pour inviter le bot sur votre serveur")
+                .addField("Commandes du bot !", "- help : Affiche les commandes du bot \n- uinfos : Montre les infos de la personne \n- url : raccourcisseur de lien \n- afk : système d'afk \n- servlist : affiche la liste des serveurs du bot \n- mc : affiche le nombre de membres sur votre serveur \n- invite : lien pour inviter le bot sur votre serveur \n- suggest : envoie une suggestion pour le bot au créateur (tout abus sera sanctionné par un ban de la commande)")
                 .addField("Fun", "- ask : Poser une question (réponse par oui ou non) \n- avatar : Montre l'avatar de la personne \n- say : Fait parler le bot (perm admin requise) \n- hug : Faire un câlin à quelqu'un \n- kiss : faire un bisous à quelqu'un \n- panda : montre un panda \n- frog : fait apparaitre une grenouille \n- hack : hacker quelqu'un \n- aurevoir : dire aurevoir ^^ \n- fakeban : ban quelqu'un \n- roll : faire un chiffre entre 0 et 100 \n- gif : cherche un gif \n- calc : fait un calcul")
-                .addField("Autres", "- InterChat: chat entre les serveurs qui ont un channel nommé ``interchat`` (pour l'activer, créez juste un channel nommé ``interchat``) \n- Ajout de réactions à certains mots clés: ``kappa``, ``fortnite``, ``ah``, ``loser``, ``nani``, ``panda``, ``ban``")
+                .addField("Autres", "- InterChat: chat entre les serveurs qui ont un channel nommé ``interchat`` (pour l'activer, créez juste un channel nommé ``interchat``) (tout abus sera sanctionné par un ban de la commande) \n- Ajout de réactions à certains mots clés: ``kappa``, ``fortnite``, ``ah``, ``loser``, ``nani``, ``panda``, ``ban``")
                 .addField("Informations", `Bot créé par ${me.tag}, Version ${version}, sur ${bot.guilds.size} serveurs`)
                 .addField("Réseaux Sociaux", "[YouTube](https://youtube.com/c/CallMeGodness) [Twitter](https://twitter.com/CallMePandaYT)")
                 .setFooter(`PandaBot`, `${pandabot.displayAvatarURL}`)
@@ -44,12 +44,32 @@ bot.on('message', message => {
         })
     }
 
+    if(message.content.startsWith(prefix + "suggest")){
+        if (message.author.id === "idofbanned" || message.author.id === "idofbanned") return message.channel.send(epref + "Tu as été banni de cette commande**");
+        var args = message.content.split(" ").slice(1);
+        if(!args[0]) return message.channel.reply(epref + `il faut préciser une suggestion**`);
+        var suggesttext = args.join(" ");
+        var suggestembed = new Discord.RichEmbed()
+            .setColor('#3DBFCB')
+            .addField("Serveur", message.guild.name, true)
+            .addField("Pseudo", message.author.username + "#" + message.author.discriminator, true)
+            .addField("Id", message.author.id)
+            .addField("Suggestion", suggesttext)
+            .setThumbnail(message.author.avatarURL)
+            .setFooter(`PandaBot`, `${pandabot.displayAvatarURL}`)
+            .setTimestamp()
+        bot.channels.findAll('name', 'pb-suggest').map(channel => channel.send(suggestembed))
+        message.delete()
+        var emoji = bot.emojis.find("name", "pbverified")
+        message.reply("Votre suggestion à bien été pris en compte " + emoji + " (tout abus sera sanctionné par un ban de la commande)");
+    }
+
     if(message.content.startsWith(prefix + "patch")){
         if(message.author.id!==`${me.id}`)return message.reply(epref + `Mais Tu n'est pas ${me.tag} :thinking:**`);
         message.delete()
         var patch_embed = new Discord.RichEmbed()
             .setColor('#3DBFCB')
-            .addField(`Patch Notes, Version ${version}`, "- Amélioration de l'interchat: il est plus joli ^^ \n- Amélioration de l'interchat: plus besoin de faire la commande pb!ic \n- Amélioration du help: nouvelle catégorie ``Autres``")
+            .addField(`Patch Notes, Version ${version}`, "- Amélioration de l'interchat: j'ai retouché à la beauté de l'interchat \n- Correction de bug: La moitié des commandes ne marchaient plus à cause de la dernière maj \n- Ajout: Commande suggest, pour faire vos suggestion du bot")
             .setFooter(`PandaBot`, `${pandabot.displayAvatarURL}`)
             .setTimestamp()
         message.channel.sendEmbed(patch_embed);
@@ -559,13 +579,16 @@ bot.on('message', message => {
         if (message.author.id === "idofbanned" || message.author.id === "idofbanned") return message.channel.send(epref + "Tu as été banni de l'interchat**");
             //                      Banned id
         if(message.author.id==`${me.id}`){
-            var rank = "Créateur"
+            var emoji = bot.emojis.find("name", "PandaGeant")
+            var rank = `Créateur (${emoji})`
             var colorembed = "#E81414"
         }else if(message.author.id==`300337658230603776`){
-            var rank = "Développeur"
+            var emoji = bot.emojis.find("name", "pbhackerman")
+            var rank = `Développeur (${emoji})`
             var colorembed = "0x1100FF"
         }else{
-            var rank = "Membre"
+            var emoji = bot.emojis.find("name", "pbverified")
+            var rank = `Membre (${emoji})`
             var colorembed = "0x8BCC14"
         }
         message.delete()
@@ -582,10 +605,11 @@ bot.on('message', message => {
             .setAuthor(`InterChat`, message.guild.iconURL)
             .addField("Serveur", message.guild.name, true)
             .addField("Pseudo", message.author.username + "#" + message.author.discriminator, true)
-            .addField("Grade", rank)
-            .addField("Message", "```js" + `\n${message.content}\n` + "```")
+            .addField("Id", message.author.id)
+            .addField("Grade dans l'interchat", rank)
+            .addField("Message", `${message.content}`)
             .setThumbnail(message.author.avatarURL)
-            .setFooter("PandaBot", `${pandabot.displayAvatarURL}`)
+            .setFooter("PandaBot (tout abus sera sanctionné par un ban de la commande)", `${pandabot.displayAvatarURL}`)
             .setTimestamp()
         bot.channels.findAll('name', 'interchat').map(channel => channel.send(embedglobal))
         bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __ic__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** avec comme message **" + message.content + "**"))
