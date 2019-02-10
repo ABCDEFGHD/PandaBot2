@@ -118,7 +118,7 @@ bot.on('message', message => {
 
     if (message.content.startsWith(prefix + "forcesay")){
         var args = message.content.split(" ").slice(1);
-        if(message.author.id==`${me.id}`) return message.reply(epref + `Mais Tu n'est pas ${me.tag} :thinking:**`);
+        if(message.author.id!==`${me.id}`)return message.reply(epref + `Mais Tu n'est pas ${me.tag} :thinking:**`);
         message.delete()
         var botmsg = args.join(" ");
         message.channel.send(botmsg)
@@ -245,57 +245,6 @@ bot.on('message', message => {
             //.setTimestamp()
         //bot.channels.findAll('name', 'interchat').map(channel => channel.send(embedicmaintenance))
     //}
-
-    if(message.channel.name !== 'interchat') return;
-    if(message.author.id==`${pandabot.id}`) return;
-    else {
-        //message.channel.send(icmt)
-        //if( icmt == "on"){
-        if (message.author.id === "idofbanned" || message.author.id === "idofbanned") return message.channel.send(epref + "Tu as été banni de l'interchat**");
-            //                      Banned id
-        if(message.author.id==`${me.id}`){
-            var rank = "Créateur"
-            var colorembed = "#E81414"
-        }else if(message.author.id==`300337658230603776`){
-            var rank = "Développeur"
-            var colorembed = "0x1100FF"
-        }else{
-            var rank = "Membre"
-            var colorembed = "0x8BCC14"
-        }
-        message.delete()
-        let blacklisted = ['https://', 'http://', 'raid', 'discord', 'hack', '`']
-        let foundInText = false
-        for (var i in blacklisted) {
-            if (message.content.toLowerCase().includes(blacklisted[i].toLowerCase())) foundInText = true;
-        }
-        if (foundInText) {
-            message.channel.send(epref + "Un mot dans votre phrase est blacklist ou est un caractère non autotrisé**");
-        } else {
-        var embedglobal = new Discord.RichEmbed()
-            .setColor(`${colorembed}`)
-            .setAuthor(`InterChat`, message.guild.iconURL)
-            .addField("Serveur", message.guild.name, true)
-            .addField("Pseudo", message.author.username + "#" + message.author.discriminator, true)
-            .addField("Grade", rank)
-            .addField("Message", "```js" + `\n${message.content}\n` + "```")
-            .setThumbnail(message.author.avatarURL)
-            .setFooter("PandaBot", `${pandabot.displayAvatarURL}`)
-            .setTimestamp()
-        bot.channels.findAll('name', 'interchat').map(channel => channel.send(embedglobal))
-        bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __ic__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** avec comme message **" + message.content + "**"))
-        }
-        //} else if(icmt == "off") {
-            //var embedicmaintenance = new Discord.RichEmbed()
-                //.setColor("0x8BCC14")
-                //.setTitle(`Maintenance`)
-                //.addField(`Une maintenance à lieu sur cette commande pour`, aicmton)
-                //.addField(`Temps de la maintenance`, `Non définie`)
-                //.setFooter("PandaBot", `${pandabot.displayAvatarURL}`)
-                //.setTimestamp()
-            //message.channel.sendEmbed(embedicmaintenance)
-        //}
-    }
 
     if(message.content.startsWith(prefix + "annonceall")) {
         if(message.author.id!=='191907565230096386')return message.reply(epref + `Mais Tu n'est pas ${me.tag} :thinking:**`);
@@ -601,6 +550,57 @@ bot.on('message', message => {
             //}
         //}
     //}
+
+    if(message.channel.name !== 'interchat') return;
+    if(message.author.id==`${pandabot.id}`) return;
+    else {
+        //message.channel.send(icmt)
+        //if( icmt == "on"){
+        if (message.author.id === "idofbanned" || message.author.id === "idofbanned") return message.channel.send(epref + "Tu as été banni de l'interchat**");
+            //                      Banned id
+        if(message.author.id==`${me.id}`){
+            var rank = "Créateur"
+            var colorembed = "#E81414"
+        }else if(message.author.id==`300337658230603776`){
+            var rank = "Développeur"
+            var colorembed = "0x1100FF"
+        }else{
+            var rank = "Membre"
+            var colorembed = "0x8BCC14"
+        }
+        message.delete()
+        let blacklisted = ['https://', 'http://', 'raid', 'discord', 'hack', '`']
+        let foundInText = false
+        for (var i in blacklisted) {
+            if (message.content.toLowerCase().includes(blacklisted[i].toLowerCase())) foundInText = true;
+        }
+        if (foundInText) {
+            message.channel.send(epref + "Un mot dans votre phrase est blacklist ou est un caractère non autotrisé**");
+        } else {
+        var embedglobal = new Discord.RichEmbed()
+            .setColor(`${colorembed}`)
+            .setAuthor(`InterChat`, message.guild.iconURL)
+            .addField("Serveur", message.guild.name, true)
+            .addField("Pseudo", message.author.username + "#" + message.author.discriminator, true)
+            .addField("Grade", rank)
+            .addField("Message", "```js" + `\n${message.content}\n` + "```")
+            .setThumbnail(message.author.avatarURL)
+            .setFooter("PandaBot", `${pandabot.displayAvatarURL}`)
+            .setTimestamp()
+        bot.channels.findAll('name', 'interchat').map(channel => channel.send(embedglobal))
+        bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __ic__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** avec comme message **" + message.content + "**"))
+        }
+        //} else if(icmt == "off") {
+            //var embedicmaintenance = new Discord.RichEmbed()
+                //.setColor("0x8BCC14")
+                //.setTitle(`Maintenance`)
+                //.addField(`Une maintenance à lieu sur cette commande pour`, aicmton)
+                //.addField(`Temps de la maintenance`, `Non définie`)
+                //.setFooter("PandaBot", `${pandabot.displayAvatarURL}`)
+                //.setTimestamp()
+            //message.channel.sendEmbed(embedicmaintenance)
+        //}
+    }
 
 });
 
