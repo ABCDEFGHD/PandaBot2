@@ -338,9 +338,9 @@ bot.on('message', message => {
         message.react(emoji)
     }
 
-    if(argsp.some(e => e==="pandabot")){
+    if(argsp.some(e => e.toLowerCase()==="pandabot")){
         if(message.author.id=='452925362599362570')return;
-        if(message.author.id==`${me.id}`) return message.channel.send("Je t'aime :heartpulse:")
+        if(message.author.id==`${me.id}` || message.author.id==`400730824254685185`) return message.channel.send("Je t'aime :heartpulse:")
         var emoji = bot.emojis.find("name", "ping")
         message.react(emoji)
         message.channel.send("Je suis occupé là laisse moi :rage:")
@@ -582,7 +582,11 @@ bot.on('message', message => {
             var emoji = bot.emojis.find("name", "PandaGeant")
             var rank = `Créateur (${emoji})`
             var colorembed = "#E81414"
-        }else if(message.author.id==`300337658230603776`){
+        }else if(message.author.id==`400730824254685185`){
+            var emoji = bot.emojis.find("name", "PandaGeant")
+            var rank = `Princesse (${emoji})`
+            var colorembed = "FF00A2"
+        }else if(message.author.id==`300337658230603776` || message.author.id==`536913877133295616`){
             var emoji = bot.emojis.find("name", "pbhackerman")
             var rank = `Développeur (${emoji})`
             var colorembed = "0x1100FF"
