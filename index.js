@@ -3,6 +3,7 @@ const Cleverbot = require("cleverbot-node");
 const shorten = require('isgd');
 const math = require('mathjs');
 const fetch = require('node-fetch');
+var fs = require('fs');
 var mysql = require('mysql');
 var apikey = "UvgdLgy6ZnYj8zGKJ2VtX8SEjoCnQNTl"
 
