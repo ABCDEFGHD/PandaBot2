@@ -7,15 +7,17 @@ var mysql = require('mysql');
 var apikey = "UvgdLgy6ZnYj8zGKJ2VtX8SEjoCnQNTl"
 
 var bot = new Discord.Client();
-var prefix = ("pb!");
+var prefix = "pb!"
 var randum = 0;
 var randum2 = 0;
-var version = "1.0.3"
+var version = "2.0.0"
 var epref = "**❌ | "
 
 bot.on('ready', () => {
-    bot.user.setPresence({ game: { name: `Manger du bambou | ${prefix}help | Version ${version}`, type: 0}})
+    bot.user.setPresence({ game: { name: `Version ${version} | ${prefix}help`, type: 0}})
     bot.user.setStatus("dnd");
+    bot.user.setAvatar('./pandou.png')
+    bot.user.setUsername("PandouBot")
     console.log("Bot Prêt !");
 });
 
@@ -23,11 +25,11 @@ bot.login(process.env.TOKEN)
 
 bot.on('message', message => {
     var me = bot.users.get("191907565230096386");
-    var pandabot = bot.users.get("452925362599362570");
     if (message.content.startsWith(prefix + "help")){
         var emoji = bot.emojis.find("name", "pbletterbox")
         message.react(emoji)
-        message.reply(":white_check_mark: Menu de help envoyé en privé")
+        var emoji = bot.emojis.find("name", "pbverified")
+        message.reply(`${emoji} Menu de help envoyé en privé`)
         message.author.createDM().then(function (channel){
             var help_embed = new Discord.RichEmbed()
                 .setColor('#E81414')
@@ -35,9 +37,11 @@ bot.on('message', message => {
                 .addField("Commandes du bot !", "- help : Affiche les commandes du bot \n- uinfos : Montre les infos de la personne \n- url : raccourcisseur de lien \n- afk : système d'afk \n- servlist : affiche la liste des serveurs du bot \n- mc : affiche le nombre de membres sur votre serveur \n- invite : lien pour inviter le bot sur votre serveur \n- suggest : envoie une suggestion pour le bot au créateur (tout abus sera sanctionné par un ban de la commande)")
                 .addField("Fun", "- ask : Poser une question (réponse par oui ou non) \n- avatar : Montre l'avatar de la personne \n- say : Fait parler le bot (perm admin requise) \n- hug : Faire un câlin à quelqu'un \n- kiss : faire un bisous à quelqu'un \n- panda : montre un panda \n- frog : fait apparaitre une grenouille \n- hack : hacker quelqu'un \n- aurevoir : dire aurevoir ^^ \n- fakeban : ban quelqu'un \n- roll : faire un chiffre entre 0 et 100 \n- gif : cherche un gif \n- calc : fait un calcul")
                 .addField("Autres", "- InterChat: chat entre les serveurs qui ont un channel nommé ``interchat`` (pour l'activer, créez juste un channel nommé ``interchat``) (tout abus sera sanctionné par un ban de la commande) \n- Ajout de réactions à certains mots clés: ``kappa``, ``fortnite``, ``ah``, ``loser``, ``nani``, ``panda``, ``ban``")
+                .addField("Réaction role", "[Veuillez cliquer pour voir la vidéo afin d'utiliser le reaction role](https://youtu.be/uPBxsg0L27I) \n(toutes les commandes sont disponibles à l'inverse pour supprimer: il suffit de remplacer ``add`` par ``remove``)")
                 .addField("Informations", `Bot créé par ${me.tag}, Version ${version}, sur ${bot.guilds.size} serveurs`)
                 .addField("Réseaux Sociaux", "[YouTube](https://youtube.com/c/CallMeGodness) [Twitter](https://twitter.com/CallMePandaYT)")
-                .setFooter(`PandaBot`, `${pandabot.displayAvatarURL}`)
+                .addField("Serveur Support", "[Discord Support](https://discord.gg/sWhNKEn)")
+                .setFooter(bot.user.username, `${bot.user.displayAvatarURL}`)
                 .setTimestamp()
             channel.sendEmbed(help_embed);
             bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __help__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "**"))
@@ -47,7 +51,7 @@ bot.on('message', message => {
     if(message.content.startsWith(prefix + "suggest")){
         if (message.author.id === "idofbanned" || message.author.id === "idofbanned") return message.channel.send(epref + "Tu as été banni de cette commande**");
         var args = message.content.split(" ").slice(1);
-        if(!args[0]) return message.channel.reply(epref + `il faut préciser une suggestion**`);
+        if(!args[0]) return message.reply(epref + `il faut préciser une suggestion**`);
         var suggesttext = args.join(" ");
         var suggestembed = new Discord.RichEmbed()
             .setColor('#3DBFCB')
@@ -56,12 +60,13 @@ bot.on('message', message => {
             .addField("Id", message.author.id)
             .addField("Suggestion", suggesttext)
             .setThumbnail(message.author.avatarURL)
-            .setFooter(`PandaBot`, `${pandabot.displayAvatarURL}`)
+            .setFooter(bot.user.username, `${bot.user.displayAvatarURL}`)
             .setTimestamp()
         bot.channels.findAll('name', 'pb-suggest').map(channel => channel.send(suggestembed))
         message.delete()
         var emoji = bot.emojis.find("name", "pbverified")
         message.reply("Votre suggestion à bien été pris en compte " + emoji + " (tout abus sera sanctionné par un ban de la commande)");
+        bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __suggest__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** avec comme message **" + suggesttext + "**"))
     }
 
     if(message.content.startsWith(prefix + "patch")){
@@ -69,8 +74,8 @@ bot.on('message', message => {
         message.delete()
         var patch_embed = new Discord.RichEmbed()
             .setColor('#3DBFCB')
-            .addField(`Patch Notes, Version ${version}`, "- Amélioration de l'interchat: j'ai retouché à la beauté de l'interchat \n- Correction de bug: La moitié des commandes ne marchaient plus à cause de la dernière maj \n- Ajout: Commande suggest, pour faire vos suggestion du bot")
-            .setFooter(`PandaBot`, `${pandabot.displayAvatarURL}`)
+            .addField(`Patch Notes, Version ${version}`, "- Passage en 2.0.0 ! Le PandaBot devient le PandouBot ! \n- Ajout des reactions role custom (voir dans le help) \n- Réglage de bug dans la commande suggest qui faisait crash le bot \n- Amélioration et optimisation du code \n- Ajout de nouveaux gifs pour le ban (merci だれも#2700) \n- mise en place du discord de support dans le invite et le help")
+            .setFooter(bot.user.username, `${bot.user.displayAvatarURL}`)
             .setTimestamp()
         message.channel.sendEmbed(patch_embed);
     }
@@ -78,7 +83,7 @@ bot.on('message', message => {
     if(message.content.startsWith(prefix + "invite")){
         var embedinv = new Discord.RichEmbed()
             .setColor('#E81414')
-            .addField(`Merci ${message.author.username} de faire confiance au pandabot et à son créateur ${me.tag} déjà ${bot.guilds.size} serveurs nous font confiance`, `[Invitation](https://discordapp.com/oauth2/authorize?client_id=${pandabot.id}&scope=bot&permissions=8)`)
+            .addField(`Merci ${message.author.username} de faire confiance au ${bot.user.username} et à son créateur ${me.tag} déjà ${bot.guilds.size} serveurs nous font confiance`, `[Invitation](https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&permissions=8) [Discord Support](https://discord.gg/sWhNKEn)`)
             .setImage("https://cdn.discordapp.com/attachments/381578923294720000/518879495277772837/merce.png")
         message.channel.send(embedinv)
         bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __invite__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "**"))
@@ -333,17 +338,24 @@ bot.on('message', message => {
 
     let argsp = message.content.split(' ');
     if(argsp.some(e => e==="@everyone")){
-        if(message.author.id=='452925362599362570')return;
+        if(message.author.id==bot.user.id)return;
         var emoji = bot.emojis.find("name", "ping")
         message.react(emoji)
     }
 
     if(argsp.some(e => e.toLowerCase()==="pandabot")){
-        if(message.author.id=='452925362599362570')return;
-        if(message.author.id==`${me.id}` || message.author.id==`400730824254685185`) return message.channel.send("Je t'aime :heartpulse:")
-        var emoji = bot.emojis.find("name", "ping")
-        message.react(emoji)
-        message.channel.send("Je suis occupé là laisse moi :rage:")
+        if(message.author.id==`${bot.user.id}`)return;
+        if(message.author.id==`${me.id}` || message.author.id==`400730824254685185`){
+            var emoji = bot.emojis.find("name", "ws10")
+            message.react(emoji)
+            message.channel.send("Je t'aime :heartpulse:")
+        } else if(message.author.id==`281717114237091840`) {
+            message.channel.send("L'empereur des Sxmourais est là, prosternez vous !")
+        } else {
+            var emoji = bot.emojis.find("name", "ping")
+            message.react(emoji)
+            message.channel.send("Je suis occupé là laisse moi :rage:")
+        }
     }
 
     //const argsc = message.content.split(' ')
@@ -357,13 +369,13 @@ bot.on('message', message => {
     //}
 
     if(argsp.some(e => e.toLowerCase()==="panda")){
-        if(message.author.id=='452925362599362570')return;
+        if(message.author.id==bot.user.id)return;
         var emoji = bot.emojis.find("name", "PandaGeant")
         message.react(emoji)
     }
 
     if(argsp.some(e => e.toLowerCase()==="kappa")){
-        if(message.author.id=='452925362599362570')return;
+        if(message.author.id==bot.user.id)return;
         var emoji = bot.emojis.find("name", "pbkappa")
         message.react(emoji)
     }
@@ -374,31 +386,31 @@ bot.on('message', message => {
     }
 
     if(argsp.some(e => e.toLowerCase()==="loser")){
-        if(message.author.id=='452925362599362570')return;
+        if(message.author.id==bot.user.id)return;
         var emoji = bot.emojis.find("name", "pbTakeTheL")
         message.react(emoji)
     }
 
     if(argsp.some(e => e.toLowerCase()==="ah")){
-        if(message.author.id=='452925362599362570')return;
+        if(message.author.id==bot.user.id)return;
         var emoji = bot.emojis.find("name", "pbAH")
         message.react(emoji)
     }
 
     if(argsp.some(e => e.toLowerCase()==="nani")){
-        if(message.author.id=='452925362599362570')return;
+        if(message.author.id==bot.user.id)return;
         var emoji = bot.emojis.find("name", "pbNani")
         message.react(emoji)
     }
 
     if(argsp.some(e => e.toLowerCase()==="ban")){
-        if(message.author.id=='452925362599362570')return;
+        if(message.author.id==bot.user.id)return;
         var emoji = bot.emojis.find("name", "pbMonokumaBan")
         message.react(emoji)
     }
 
     if(argsp.some(e => e.toLowerCase()==="fortnite")){
-        if(message.author.id=='452925362599362570')return;
+        if(message.author.id==bot.user.id)return;
         var emoji = bot.emojis.find("name", "pbfertnite")
         message.react(emoji)
     }
@@ -470,51 +482,51 @@ bot.on('message', message => {
     
     let afk = JSON.parse(fs.readFileSync("./afks.json", "utf8"));
     if (message.content.startsWith(prefix + "remafk")){
-    if (afk[msg.author.id]) {
-    delete afk[msg.author.id];
-    if (msg.member.nickname === null) {
-    msg.channel.send("J'ai enlever votre afk");
-    bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __remafk__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "**"))
-    }else{
-    msg.channel.send("J'ai enlever votre afk");
-    bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __remafk__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "**"))
-    }
-    fs.writeFile("./afks.json", JSON.stringify(afk), (err) => { if (err) console.error(err);});
-    }else{
-    msg.channel.send(epref + "Tu es déjà afk**");
-    }
+        if (afk[msg.author.id]) {
+            delete afk[msg.author.id];
+            if (msg.member.nickname === null) {
+                msg.channel.send("J'ai enlever votre afk");
+                bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __remafk__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "**"))
+            }else{
+                msg.channel.send("J'ai enlever votre afk");
+                bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __remafk__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "**"))
+            }
+            fs.writeFile("./afks.json", JSON.stringify(afk), (err) => { if (err) console.error(err);});
+        }else{
+            msg.channel.send(epref + "Tu es déjà afk**");
+        }
     }
     
     
     if (msg.content.startsWith(prefix + "afk")||msg.content === prefix + "afk") {
-    if (afk[msg.author.id]) {
-    return message.channel.send(epref + "Tu es déjà afk**");
-    }else{
-    let args1 = msg.content.split(" ").slice(1);
-    if (args1.length === 0) {
-    afk[msg.author.id] = {"reason" : true};
-    msg.delete();
-    msg.channel.send(`Tu es désormais afk, met **${prefix}remafk** pour enlever ton afk`).then(x => DeleteQueue.add(x, 10000));
-    bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __afk__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** sans raison"))
-    }else{
-    afk[msg.author.id] = {"reason" : args1.join(" ")};
-    msg.delete();
-    msg.channel.send(`Tu es désormais afk, met **${prefix}remafk** pour enlever ton afk`).then(x => DeleteQueue.add(x, 10000));
-    bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __afk__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** avec comme raison **" + afk[msg.author.id].reason + "**"))
-    }
-    fs.writeFile("./afks.json", JSON.stringify(afk), (err) => { if (err) console.error(err);});
-    }
+        if (afk[msg.author.id]) {
+            return message.channel.send(epref + "Tu es déjà afk**");
+        }else{
+            let args1 = msg.content.split(" ").slice(1);
+            if (args1.length === 0) {
+                afk[msg.author.id] = {"reason" : true};
+                msg.delete();
+                msg.channel.send(`Tu es désormais afk, met **${prefix}remafk** pour enlever ton afk`).then(x => DeleteQueue.add(x, 10000));
+                bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __afk__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** sans raison"))
+            }else{
+                afk[msg.author.id] = {"reason" : args1.join(" ")};
+                msg.delete();
+                msg.channel.send(`Tu es désormais afk, met **${prefix}remafk** pour enlever ton afk`).then(x => DeleteQueue.add(x, 10000));
+                bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __afk__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** avec comme raison **" + afk[msg.author.id].reason + "**"))
+            }
+            fs.writeFile("./afks.json", JSON.stringify(afk), (err) => { if (err) console.error(err);});
+        }
     }
         
-        var mentionned = message.mentions.users.first();
+    var mentionned = message.mentions.users.first();
     if(msg.mentions.users.size > 0) {
-    if (afk[msg.mentions.users.first().id]) {
-    if (afk[msg.mentions.users.first().id].reason === true) {
-    message.channel.send(`${mentionned.username} est AFK: pas de raison`);
-    }else{
-    message.channel.send(`${mentionned.username} est AFK: ${afk[msg.mentions.users.first().id].reason}`);
-    }
-    }
+        if (afk[msg.mentions.users.first().id]) {
+            if (afk[msg.mentions.users.first().id].reason === true) {
+                message.channel.send(`${mentionned.username} est AFK: pas de raison`);
+            }else{
+                message.channel.send(`${mentionned.username} est AFK: ${afk[msg.mentions.users.first().id].reason}`);
+            }
+        }
     }
 
     var ban = [
@@ -522,6 +534,11 @@ bot.on('message', message => {
         "https://media.giphy.com/media/C51woXfgJdug/giphy.gif",
         "https://media.giphy.com/media/uC9e2ojJn1ZXW/giphy.gif",
         "https://media.giphy.com/media/nsvGtvp0lYDKg/giphy.gif",
+        "https://cdn.discordapp.com/attachments/550393834941579264/550623611040563211/BZIyPaS.gif",
+        "https://cdn.discordapp.com/attachments/550393834941579264/550623611648606208/O3DHIA5.gif",
+        "https://cdn.discordapp.com/attachments/550393834941579264/550624026486112256/tenor-3.gif",
+        "https://cdn.discordapp.com/attachments/550393834941579264/550624082346115072/5ec.gif",
+        "https://cdn.discordapp.com/attachments/550393834941579264/550625258491609098/giphy.gif",
     ]
 
     if(message.content.startsWith(prefix + "fakeban")) {
@@ -590,6 +607,10 @@ bot.on('message', message => {
             var emoji = bot.emojis.find("name", "pbhackerman")
             var rank = `Développeur (${emoji})`
             var colorembed = "0x1100FF"
+        }else if(message.author.id==`281717114237091840`){
+            var emoji = bot.emojis.find("name", "pbkappa")
+            var rank = `Ami (${emoji})`
+            var colorembed = "B600FF"
         }else{
             var emoji = bot.emojis.find("name", "pbverified")
             var rank = `Membre (${emoji})`
@@ -613,7 +634,7 @@ bot.on('message', message => {
             .addField("Grade dans l'interchat", rank)
             .addField("Message", `${message.content}`)
             .setThumbnail(message.author.avatarURL)
-            .setFooter("PandaBot (tout abus sera sanctionné par un ban de la commande)", `${pandabot.displayAvatarURL}`)
+            .setFooter(`${bot.user.username} (tout abus sera sanctionné par un ban de la commande)`, `${bot.user.displayAvatarURL}`)
             .setTimestamp()
         bot.channels.findAll('name', 'interchat').map(channel => channel.send(embedglobal))
         bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __ic__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** avec comme message **" + message.content + "**"))
@@ -642,6 +663,128 @@ bot.on('guildMemberAdd', member => {
     .setTimestamp()
     member.guild.channels.find("name", "bienvenue").send(bvn_embed)
 })
+
+var readfile = '{}';
+if(fsExistsSync('guilds.json')) {
+  readfile = fs.readFileSync('guilds.json');
+}
+var guilds = JSON.parse(readfile);
+
+bot.on('message', async (message) => {
+  var emoji = bot.emojis.find("name", "pbverified")
+  if(message.member.id === bot.user.id) return;
+  msgSplit = message.content.split(' ');
+  while(msgSplit.indexOf('') > -1) {
+    msgSplit.splice(msgSplit.indexOf(''), 1);
+  }
+  if(!(message.member.guild.id in guilds)) {
+    guilds[message.member.guild.id] = {
+      "activechannel": message.channel.id,
+      "messages": [],
+      "emojiForRole": {},
+      "emojiIDForRole": {}
+    };
+  }
+  if(msgSplit[0] == 'pb!addreaction' && msgSplit.length >= 3 && msgSplit[1].startsWith("<@&") && await message.member.hasPermission("ADMINISTRATOR")) {
+    var roleid = msgSplit[1].split("<@&")[1].split(">")[0];
+    if(msgSplit[2].startsWith("<:")) {
+      var emojiId = msgSplit[2].split(":")[2].split(">")[0];
+      guilds[message.member.guild.id]["emojiIDForRole"][emojiId] = roleid;
+    } else {
+      guilds[message.member.guild.id]["emojiForRole"][msgSplit[2]] = roleid;
+    }
+    message.reply(emoji + ` Reaction ajoutée avec succès`)
+  }
+  if(msgSplit[0] == "pb!removereaction" && msgSplit.length >= 2 && await message.member.hasPermission("ADMINISTRATOR")) {
+    if(msgSplit[2].startsWith("<:")) {
+      var emojiId = msgSplit[2].split(":")[2].split(">")[0];
+      delete guilds[message.member.guild.id]["emojiIDForRole"][emojiId];
+    } else {
+      delete guilds[message.member.guild.id]["emojiForRole"][msgSplit[2]];
+    }
+    message.reply(emoji + ` Réaction retirée avec succès`)
+  }
+  if(msgSplit[0] == 'pb!addmessage' && msgSplit.length >= 2 && await message.member.hasPermission("ADMINISTRATOR")) {
+    if(guilds[message.member.guild.id]["activechannel"] === "") message.reply("Veuillez activer un channel avec : *setchannel #channel");
+    guilds[message.member.guild.id]["messages"].push(msgSplit[1]);
+    try {
+      message.reply(emoji + " Message ajouté avec succès")
+      let msg = await bot.channels.get(guilds[message.member.guild.id]["activechannel"]).fetchMessage(msgSplit[1]);
+      for(let emote in guilds[message.member.guild.id]["emojiIDForRole"]) {
+        await msg.react(emote);
+      }
+      for(let emote in guilds[message.member.guild.id]["emojiForRole"]) {
+        await msg.react(emote);
+      }
+    } catch(error) {
+      message.reply("Ce message n'a pas été trouvé dans le channel actif");
+    }
+  }
+  if(msgSplit[0] == 'pb!removemessage' && msgSplit.length >= 2 && await message.member.hasPermission("ADMINISTRATOR")) {
+    let index = guilds[message.member.guild.id]["messages"].indexOf(msgSplit[1]);
+    if(index > -1) {
+      guilds[message.member.guild.id]["messages"].splice(index, 1);
+    }
+    try {
+      message.reply(emoji + " Message retiré avec succès")
+      let msg = await bot.channels.get(guilds[message.member.guild.id]["activechannel"]).fetchMessage(msgSplit[1]);
+      msg.clearReactions();
+    } catch(error) {
+      message.reply("Ce message n'a pas été trouvé dans le channel actif mais a été supprimé de la base de données");
+    }
+  }
+  if(msgSplit[0] == 'pb!setchannel' && msgSplit.length >= 2 && await message.member.hasPermission("ADMINISTRATOR") && msgSplit[1].startsWith("<#")) {
+    message.reply(emoji + " Channel ajouté avec succès")
+    guilds[message.member.guild.id]["activechannel"] = msgSplit[1].split("<#")[1].split(">")[0];
+  }
+  saveData();
+});
+
+bot.on('raw', event => {
+  if((event['t'] == 'MESSAGE_REACTION_ADD' || event['t'] == 'MESSAGE_REACTION_REMOVE') && event.d.user_id !== bot.user.id) { 
+    if(event.d.guild_id in guilds) {
+      var guild = bot.guilds.get(event.d.guild_id);
+      var roleid = "";
+      if('emojiForRole' in guilds[event.d.guild_id]) {
+        if(event.d.emoji.name in guilds[event.d.guild_id]['emojiForRole'] && guilds[event.d.guild_id]["messages"].some(val => val == event.d.message_id)) {
+          roleid = guilds[event.d.guild_id]['emojiForRole'][event.d.emoji.name];
+
+        }
+      } 
+      if('emojiIDForRole' in guilds[event.d.guild_id]) {
+        if(event.d.emoji.id in guilds[event.d.guild_id]['emojiIDForRole'] && guilds[event.d.guild_id]["messages"].some(val => val == event.d.message_id)) {
+          roleid = guilds[event.d.guild_id]['emojiIDForRole'][event.d.emoji.id];
+        }
+      }
+
+      if(roleid != "") {
+        if(event['t'] == 'MESSAGE_REACTION_ADD') {
+          guild.fetchMember(event.d.user_id).then(member => member.addRole(guild.roles.get(roleid))).catch(console.error);
+        } else if(event['t'] == 'MESSAGE_REACTION_REMOVE') {
+          guild.fetchMember(event.d.user_id).then(member => member.removeRole(guild.roles.get(roleid))).catch(console.error);
+        }
+      }
+    }
+    
+  }
+});
+
+function saveData() {
+  fs.writeFile('guilds.json', JSON.stringify(guilds), (err) => {
+    if(err !== null) {
+      console.log(err)
+    }
+  });
+}
+
+function fsExistsSync(myDir) {
+  try {
+    fs.accessSync(myDir);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
 
 function random(min, max) {
     min = Math.ceil(0);
