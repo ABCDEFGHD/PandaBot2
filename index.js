@@ -22,8 +22,7 @@ bot.on('ready', () => {
     console.log("Bot Prêt !");
 });
 
-//bot.login(process.env.TOKEN)
-bot.login('NDQxOTc0OTQ3NjQwOTAxNjQz.DsDIjw.cADsSpMIbw5SHpCwLmTxSwqfqek')
+bot.login(process.env.TOKEN)
 
 bot.on('message', message => {
     var me = bot.users.get("191907565230096386");
