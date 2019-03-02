@@ -354,7 +354,8 @@ bot.on('message', message => {
         } else if(message.author.id==`400730824254685185`){
             message.channel.send("Je vous aime ma très chère déesse des panda :heartpulse:")
         } else if(message.author.id==`${me.id}`){
-            message.channel.send("Je vous aime mon dieu Panda :08:")
+            var emoji = bot.emojis.find("name", "08")
+            message.channel.send(`Je vous aime mon dieu Panda ${emoji}`)
         } else if(message.author.id==`281717114237091840`) {
             message.channel.send("L'empereur des Sxmourais est là, prosternez vous !")
         } else {
