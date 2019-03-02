@@ -22,7 +22,8 @@ bot.on('ready', () => {
     console.log("Bot Prêt !");
 });
 
-bot.login(process.env.TOKEN)
+//bot.login(process.env.TOKEN)
+bot.login('NDQxOTc0OTQ3NjQwOTAxNjQz.DsDIjw.cADsSpMIbw5SHpCwLmTxSwqfqek')
 
 bot.on('message', message => {
     var me = bot.users.get("191907565230096386");
@@ -347,10 +348,14 @@ bot.on('message', message => {
 
     if(argsp.some(e => e.toLowerCase()==="pandou")){
         if(message.author.id==`${bot.user.id}`)return;
-        if(message.author.id==`${me.id}` || message.author.id==`400730824254685185` || message.author.id==`470569212453191698`){
+        if(message.author.id==`470569212453191698`){
             var emoji = bot.emojis.find("name", "ws10")
             message.react(emoji)
             message.channel.send("Je t'aime :heartpulse:")
+        } else if(message.author.id==`400730824254685185`){
+            message.channel.send("Je vous aime ma très chère déesse des panda :heartpulse:")
+        } else if(message.author.id==`${me.id}`){
+            message.channel.send("Je vous aime mon dieu Panda :08:")
         } else if(message.author.id==`281717114237091840`) {
             message.channel.send("L'empereur des Sxmourais est là, prosternez vous !")
         } else {
