@@ -339,14 +339,15 @@ bot.on('message', message => {
 
     let argsp = message.content.split(' ');
     if(argsp.some(e => e==="@everyone")){
+        if(message.guild.id=="497131782081216560")return;
         if(message.author.id==bot.user.id)return;
         var emoji = bot.emojis.find("name", "ping")
         message.react(emoji)
     }
 
-    if(argsp.some(e => e.toLowerCase()==="pandabot")){
+    if(argsp.some(e => e.toLowerCase()==="pandou")){
         if(message.author.id==`${bot.user.id}`)return;
-        if(message.author.id==`${me.id}` || message.author.id==`400730824254685185`){
+        if(message.author.id==`${me.id}` || message.author.id==`400730824254685185` || message.author.id==`470569212453191698`){
             var emoji = bot.emojis.find("name", "ws10")
             message.react(emoji)
             message.channel.send("Je t'aime :heartpulse:")
