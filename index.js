@@ -73,7 +73,7 @@ bot.on('message', message => {
         message.delete()
         var patch_embed = new Discord.RichEmbed()
             .setColor('#3DBFCB')
-            .addField(`Patch Notes, Version ${version}`, "- Ajout massif de gifs pour les commandes ban, hug, kiss \n- Vous pouvez mettre le nombre que vous voulez en roll (il ira de 0 au nombre que vous avez choisi) \n- Ajout de 2 commandes secrètes ^^ (une accèssible que par moi et l'autre par tous)")
+            .addField(`Patch Notes, Version ${version}`, "- Arrêt des commandes de réaction role \n- Ajout massif de gifs pour les commandes ban, hug, kiss \n- Vous pouvez mettre le nombre que vous voulez en roll (il ira de 0 au nombre que vous avez choisi) \n- Ajout de 2 commandes secrètes ^^ (une accèssible que par moi et l'autre par tous)")
             .setFooter(bot.user.username, `${bot.user.displayAvatarURL}`)
             .setTimestamp()
         message.channel.sendEmbed(patch_embed);
