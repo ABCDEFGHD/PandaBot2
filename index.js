@@ -85,6 +85,7 @@ bot.on('message', message => {
             let truc = message.guild.member(message.mentions.users.first() || message.guild.members.get(arguments[0]));
             message.delete()
             message.channel.createWebhook(`${truc.displayName}`, `${truc.user.displayAvatarURL}`).then(wb => new Discord.WebhookClient(wb.id, wb.token).send(message.content.split(" ").slice(2).join(" ")));
+            bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __wb__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** sur **" + truc.user.tag + "** avec comme message **" + message.content.split(" ").slice(2).join(" ") + "**"))
         } else {
             message.channel.send(epref + "Tu n'as pas accès :p**")
         }
