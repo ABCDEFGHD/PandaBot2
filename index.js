@@ -11,14 +11,12 @@ var bot = new Discord.Client();
 var prefix = "pb!"
 var randum = 0;
 var randum2 = 0;
-var version = "2.0.0"
+var version = "2.0.1"
 var epref = "**❌ | "
 
 bot.on('ready', () => {
     bot.user.setPresence({ game: { name: `Version ${version} | ${prefix}help`, type: 0}})
     bot.user.setStatus("dnd");
-    bot.user.setAvatar('./pandou.png')
-    bot.user.setUsername("PandouBot")
     console.log("Bot Prêt !");
 });
 
@@ -38,7 +36,7 @@ bot.on('message', message => {
                 .addField("Commandes du bot !", "- help : Affiche les commandes du bot \n- uinfos : Montre les infos de la personne \n- url : raccourcisseur de lien \n- afk : système d'afk \n- servlist : affiche la liste des serveurs du bot \n- mc : affiche le nombre de membres sur votre serveur \n- invite : lien pour inviter le bot sur votre serveur \n- suggest : envoie une suggestion pour le bot au créateur (tout abus sera sanctionné par un ban de la commande)")
                 .addField("Fun", "- ask : Poser une question (réponse par oui ou non) \n- avatar : Montre l'avatar de la personne \n- say : Fait parler le bot (perm admin requise) \n- hug : Faire un câlin à quelqu'un \n- kiss : faire un bisous à quelqu'un \n- panda : montre un panda \n- frog : fait apparaitre une grenouille \n- hack : hacker quelqu'un \n- aurevoir : dire aurevoir ^^ \n- fakeban : ban quelqu'un \n- roll : faire un chiffre entre 0 et 100 \n- gif : cherche un gif \n- calc : fait un calcul")
                 .addField("Autres", "- InterChat: chat entre les serveurs qui ont un channel nommé ``interchat`` (pour l'activer, créez juste un channel nommé ``interchat``) (tout abus sera sanctionné par un ban de la commande) \n- Ajout de réactions à certains mots clés: ``kappa``, ``fortnite``, ``ah``, ``loser``, ``nani``, ``panda``, ``ban``")
-                .addField("Réaction role", "[Veuillez cliquer pour voir la vidéo afin d'utiliser le reaction role](https://youtu.be/uPBxsg0L27I) \n(toutes les commandes sont disponibles à l'inverse pour supprimer: il suffit de remplacer ``add`` par ``remove``)")
+                //.addField("Réaction role", "[Veuillez cliquer pour voir la vidéo afin d'utiliser le reaction role](https://youtu.be/uPBxsg0L27I) \n(toutes les commandes sont disponibles à l'inverse pour supprimer: il suffit de remplacer ``add`` par ``remove``)")
                 .addField("Informations", `Bot créé par ${me.tag}, Version ${version}, sur ${bot.guilds.size} serveurs`)
                 .addField("Réseaux Sociaux", "[YouTube](https://youtube.com/c/CallMeGodness) [Twitter](https://twitter.com/CallMePandaYT)")
                 .addField("Serveur Support", "[Discord Support](https://discord.gg/sWhNKEn)")
@@ -75,10 +73,18 @@ bot.on('message', message => {
         message.delete()
         var patch_embed = new Discord.RichEmbed()
             .setColor('#3DBFCB')
-            .addField(`Patch Notes, Version ${version}`, "- Passage en 2.0.0 ! Le PandaBot devient le PandouBot ! \n- Ajout des reactions role custom (voir dans le help) \n- Réglage de bug dans la commande suggest qui faisait crash le bot \n- Amélioration et optimisation du code \n- Ajout de nouveaux gifs pour le ban (merci だれも#2700) \n- mise en place du discord de support dans le invite et le help")
+            .addField(`Patch Notes, Version ${version}`, "- Ajout massif de gifs pour les commandes ban, hug, kiss \n- Vous pouvez mettre le nombre que vous voulez en roll (il ira de 0 au nombre que vous avez choisi) \n- Ajout de 2 commandes secrètes ^^ (une accèssible que par moi et l'autre par tous)")
             .setFooter(bot.user.username, `${bot.user.displayAvatarURL}`)
             .setTimestamp()
         message.channel.sendEmbed(patch_embed);
+    }
+
+    if(message.content.startsWith(prefix + "wb")) {
+        if(message.author.id!==`${me.id}`)return message.reply(epref + `Mais Tu n'est pas ${me.tag} :thinking:**`);
+        if (!message.mentions.users.first()) return message.channel.send(epref + "Entrez un utilisateur.**")
+        let truc = message.guild.member(message.mentions.users.first() || message.guild.members.get(arguments[0]));
+        message.delete()
+        message.channel.createWebhook(`${truc.user.username}`, `${truc.user.displayAvatarURL}`).then(wb => new Discord.WebhookClient(wb.id, wb.token).send(message.content.split(" ").slice(2).join(" ")));
     }
 
     if(message.content.startsWith(prefix + "invite")){
@@ -99,12 +105,16 @@ bot.on('message', message => {
         } catch (e) {
             return message.channel.send(epref + "Ce n'est pas un calcul valide**");
         }
-        var embedmath = new Discord.RichEmbed()
-            .setColor(0xffffff)
-            .addField('Calcul de base', `\`\`\`js\n${args.join('')}\`\`\``)
-            .addField('Résultat', `\`\`\`js\n${resp}\`\`\``)
-        message.channel.send(embedmath)
-        bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __calc__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** avec comme calcul **" + args + "** et comme résultat **" + resp + "**"))
+        if(resp > 999999999) {
+            message.channel.send(epref + "Ce calcul est trop grand**")
+        } else {
+            var embedmath = new Discord.RichEmbed()
+                .setColor(0xffffff)
+                .addField('Calcul de base', `\`\`\`js\n${args.join('')}\`\`\``)
+                .addField('Résultat', `\`\`\`js\n${resp}\`\`\``)
+            message.channel.send(embedmath)
+            bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __calc__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** avec comme calcul **" + args + "** et comme résultat **" + resp + "**"))
+        }
     }
 
     if (message.content.startsWith(prefix + "gif")){
@@ -190,20 +200,40 @@ bot.on('message', message => {
     }
 
     if (message.content.startsWith(prefix + "roll")){
-        random2();
-        if (randum2 < 5){
-            message.channel.sendMessage(`Echec Critique **${randum2}**`);
-            console.log(randum2);
+        var args = message.content.split(" ").slice(1);
+        if(!args[0]) {
+            min = Math.ceil(0);
+            max = Math.floor(100);
+            randum2 = Math.floor(Math.random() * (max - min +1) + min);
+            if (randum2 < 5){
+                message.channel.sendMessage(`Echec Critique **${randum2}**`);
+                console.log(randum2);
+            }
+            else if (randum2 > 95){
+                message.channel.sendMessage(`Réussite Critique **${randum2}**`);
+                console.log(randum2);
+            }
+            else{
+                message.channel.sendMessage(`Roll: **${randum2}**`);
+                console.log(randum2);
+            }
+            bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __roll__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** avec comme nombre **" + randum2 + "**"))
+        } else {
+            if(args > 999999999) {
+                message.channel.send(epref + "Ce nombre est trop grand**")
+            } else {
+                if(isNaN(args)){
+                    message.channel.send(epref + "Ceci n'est pas un nombre valide**")
+                } else {
+                    min = Math.ceil(0);
+                    max = Math.floor(args);
+                    randum2 = Math.floor(Math.random() * (max - min +1) + min);
+                    message.channel.sendMessage(`Roll: **${randum2}**`);
+                    console.log(randum2);
+                    bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __roll__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** avec comme nombre **" + args + "** et comme résultat **" + randum2 + "**"))
+                }
+            }
         }
-        else if (randum2 > 95){
-            message.channel.sendMessage(`Réussite Critique **${randum2}**`);
-            console.log(randum2);
-        }
-        else{
-            message.channel.sendMessage(`Roll: **${randum2}**`);
-            console.log(randum2);
-        }
-        bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __roll__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** avec comme nombre **" + randum2 + "**"))
     }
 
     if (message.content.startsWith(prefix + "avatar")) {
@@ -211,7 +241,7 @@ bot.on('message', message => {
             let user = message.mentions.users.first() ? message.mentions.users.first() : message.author
             let ava = user.displayAvatarURL
             let embed = {
-            color:0x1100FF,
+            color:0x00FFE8,
             description:"Avatar de "+user.username+": *[url]("+ava+")*",
             image:{url:ava}
             }
@@ -293,6 +323,16 @@ bot.on('message', message => {
     //}
 
     var hug = [
+        "https://media.giphy.com/media/143v0Z4767T15e/giphy.gif",
+        "https://media.giphy.com/media/wnsgren9NtITS/giphy.gif",
+        "https://media.giphy.com/media/HaC1WdpkL3W00/giphy.gif",
+        "https://media.giphy.com/media/kvKFM3UWg2P04/giphy.gif",
+        "https://media.giphy.com/media/yziFo5qYAOgY8/giphy.gif",
+        "https://media.giphy.com/media/od5H3PmEG5EVq/giphy.gif",
+        "https://media.giphy.com/media/cotftb3AXgfV6/giphy.gif",
+        "https://media.giphy.com/media/13YrHUvPzUUmkM/giphy.gif",
+        "https://media.giphy.com/media/GA2Opryocs0tq/giphy.gif",
+        "https://media.giphy.com/media/YKu0tLheE7dmM/giphy.gif",
         "https://media.giphy.com/media/lrr9rHuoJOE0w/giphy.gif",
         "https://media.giphy.com/media/ByJYqLWjvzJwk/giphy.gif",
         "https://media.giphy.com/media/xUPGcz1FByjZlWZKms/giphy.gif",
@@ -423,6 +463,21 @@ bot.on('message', message => {
     }
 
     var kiss = [
+        "https://media.giphy.com/media/hnNyVPIXgLdle/giphy.gif",
+        "https://media.giphy.com/media/bm2O3nXTcKJeU/giphy.gif",
+        "https://media.giphy.com/media/wOtkVwroA6yzK/giphy.gif",
+        "https://media.giphy.com/media/ZRSGWtBJG4Tza/giphy.gif",
+        "https://media.giphy.com/media/zkppEMFvRX5FC/giphy.gif",
+        "https://media.giphy.com/media/G3va31oEEnIkM/giphy.gif",
+        "https://media.giphy.com/media/nyGFcsP0kAobm/giphy.gif",
+        "https://media.giphy.com/media/FqBTvSNjNzeZG/giphy.gif",
+        "https://media.giphy.com/media/IdzovcoOUoUM0/giphy.gif",
+        "https://media.giphy.com/media/oHZPerDaubltu/giphy.gif",
+        "https://media.giphy.com/media/ll5leTSPh4ocE/giphy.gif",
+        "https://media.giphy.com/media/vUrwEOLtBUnJe/giphy.gif",
+        "https://media.giphy.com/media/Ka2NAhphLdqXC/giphy.gif",
+        "https://media.giphy.com/media/OSq9souL3j5zW/giphy.gif",
+        "https://media.giphy.com/media/kU586ictpGb0Q/giphy.gif",
         "https://media.giphy.com/media/QGc8RgRvMonFm/giphy.gif",
         "https://media.giphy.com/media/wHbQ7IMBrgTzq/giphy.gif",
         "https://media.giphy.com/media/4dCj46k0Qtyxy/giphy.gif",
@@ -537,10 +592,13 @@ bot.on('message', message => {
     }
 
     var ban = [
+        "https://media.giphy.com/media/e3WNjAUKGNGoM/giphy.gif",
+        "https://media.giphy.com/media/xT5LMDzs9xYtHXeItG/giphy.gif",
+        "https://media.giphy.com/media/2diYvJgLHN5bkqVMuf/giphy.gif",
+        "https://media.giphy.com/media/3o751XbGLXpORSxtQY/giphy.gif",
         "https://media.giphy.com/media/qPD4yGsrc0pdm/giphy.gif",
         "https://media.giphy.com/media/C51woXfgJdug/giphy.gif",
         "https://media.giphy.com/media/uC9e2ojJn1ZXW/giphy.gif",
-        "https://media.giphy.com/media/nsvGtvp0lYDKg/giphy.gif",
         "https://cdn.discordapp.com/attachments/550393834941579264/550623611040563211/BZIyPaS.gif",
         "https://cdn.discordapp.com/attachments/550393834941579264/550623611648606208/O3DHIA5.gif",
         "https://cdn.discordapp.com/attachments/550393834941579264/550624026486112256/tenor-3.gif",
@@ -561,6 +619,10 @@ bot.on('message', message => {
             message.channel.send(embedban)
             bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __fakeban__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** sur **" + fban.tag + "**"))
         }
+    }
+
+    if(message.content.startsWith(prefix + "kiba")) {
+        message.channel.send("−·− ·· −··· ·−  · ··· −  ··− −·  ·−−· ·− −· −·· ·−  −−·− ··− ··  ··· · ·−· ·−  − −−− ··− ·−−− −−− ··− ·−· ···  ·− ··−  −·· · ··· ··· ··− ···  −·· · ···  ···· ··− −− ·− ·· −· ··· ·−·−·−  · −  −− −−− ··  ·−−− ·  ··· · ·−· ·− ·· ···  ·−·· ·−−·−  ·−−· −−− ··− ·−·  ·−·· ·−−−−· ·− ·· −·· · ·−·  ·−−·−  −− −−− −· − · ·−·  ··· −−− −·  ·−· ·−··− −−· −· · ·−·−·−  #· ·− ··· − · ·−·  · −−· −−· ")
     }
 
     if(message.content.startsWith(prefix + "servlist")) {
@@ -671,136 +733,130 @@ bot.on('guildMemberAdd', member => {
     member.guild.channels.find("name", "bienvenue").send(bvn_embed)
 })
 
-var readfile = '{}';
-if(fsExistsSync('guilds.json')) {
-  readfile = fs.readFileSync('guilds.json');
-}
-var guilds = JSON.parse(readfile);
+//var readfile = '{}';
+//if(fsExistsSync('guilds.json')) {
+  //readfile = fs.readFileSync('guilds.json');
+//}
+//var guilds = JSON.parse(readfile);
 
-bot.on('message', async (message) => {
-  var emoji = bot.emojis.find("name", "pbverified")
-  if(message.member.id === bot.user.id) return;
-  msgSplit = message.content.split(' ');
-  while(msgSplit.indexOf('') > -1) {
-    msgSplit.splice(msgSplit.indexOf(''), 1);
-  }
-  if(!(message.member.guild.id in guilds)) {
-    guilds[message.member.guild.id] = {
-      "activechannel": message.channel.id,
-      "messages": [],
-      "emojiForRole": {},
-      "emojiIDForRole": {}
-    };
-  }
-  if(msgSplit[0] == 'pb!addreaction' && msgSplit.length >= 3 && msgSplit[1].startsWith("<@&") && await message.member.hasPermission("ADMINISTRATOR")) {
-    var roleid = msgSplit[1].split("<@&")[1].split(">")[0];
-    if(msgSplit[2].startsWith("<:")) {
-      var emojiId = msgSplit[2].split(":")[2].split(">")[0];
-      guilds[message.member.guild.id]["emojiIDForRole"][emojiId] = roleid;
-    } else {
-      guilds[message.member.guild.id]["emojiForRole"][msgSplit[2]] = roleid;
-    }
-    message.reply(emoji + ` Reaction ajoutée avec succès`)
-  }
-  if(msgSplit[0] == "pb!removereaction" && msgSplit.length >= 2 && await message.member.hasPermission("ADMINISTRATOR")) {
-    if(msgSplit[2].startsWith("<:")) {
-      var emojiId = msgSplit[2].split(":")[2].split(">")[0];
-      delete guilds[message.member.guild.id]["emojiIDForRole"][emojiId];
-    } else {
-      delete guilds[message.member.guild.id]["emojiForRole"][msgSplit[2]];
-    }
-    message.reply(emoji + ` Réaction retirée avec succès`)
-  }
-  if(msgSplit[0] == 'pb!addmessage' && msgSplit.length >= 2 && await message.member.hasPermission("ADMINISTRATOR")) {
-    if(guilds[message.member.guild.id]["activechannel"] === "") message.reply("Veuillez activer un channel avec : *setchannel #channel");
-    guilds[message.member.guild.id]["messages"].push(msgSplit[1]);
-    try {
-      message.reply(emoji + " Message ajouté avec succès")
-      let msg = await bot.channels.get(guilds[message.member.guild.id]["activechannel"]).fetchMessage(msgSplit[1]);
-      for(let emote in guilds[message.member.guild.id]["emojiIDForRole"]) {
-        await msg.react(emote);
-      }
-      for(let emote in guilds[message.member.guild.id]["emojiForRole"]) {
-        await msg.react(emote);
-      }
-    } catch(error) {
-      message.reply("Ce message n'a pas été trouvé dans le channel actif");
-    }
-  }
-  if(msgSplit[0] == 'pb!removemessage' && msgSplit.length >= 2 && await message.member.hasPermission("ADMINISTRATOR")) {
-    let index = guilds[message.member.guild.id]["messages"].indexOf(msgSplit[1]);
-    if(index > -1) {
-      guilds[message.member.guild.id]["messages"].splice(index, 1);
-    }
-    try {
-      message.reply(emoji + " Message retiré avec succès")
-      let msg = await bot.channels.get(guilds[message.member.guild.id]["activechannel"]).fetchMessage(msgSplit[1]);
-      msg.clearReactions();
-    } catch(error) {
-      message.reply("Ce message n'a pas été trouvé dans le channel actif mais a été supprimé de la base de données");
-    }
-  }
-  if(msgSplit[0] == 'pb!setchannel' && msgSplit.length >= 2 && await message.member.hasPermission("ADMINISTRATOR") && msgSplit[1].startsWith("<#")) {
-    message.reply(emoji + " Channel ajouté avec succès")
-    guilds[message.member.guild.id]["activechannel"] = msgSplit[1].split("<#")[1].split(">")[0];
-  }
-  saveData();
-});
+//bot.on('message', async (message) => {
+  //var emoji = bot.emojis.find("name", "pbverified")
+  //if(message.member.id === bot.user.id) return;
+  //msgSplit = message.content.split(' ');
+  //while(msgSplit.indexOf('') > -1) {
+    //msgSplit.splice(msgSplit.indexOf(''), 1);
+  //}
+  //if(!(message.member.guild.id in guilds)) {
+    //guilds[message.member.guild.id] = {
+      //"activechannel": message.channel.id,
+      //"messages": [],
+      //"emojiForRole": {},
+      //"emojiIDForRole": {}
+    //};
+  //}
+  //if(msgSplit[0] == 'pb!addreaction' && msgSplit.length >= 3 && msgSplit[1].startsWith("<@&") && await message.member.hasPermission("ADMINISTRATOR")) {
+    //var roleid = msgSplit[1].split("<@&")[1].split(">")[0];
+    //if(msgSplit[2].startsWith("<:")) {
+      //var emojiId = msgSplit[2].split(":")[2].split(">")[0];
+      //guilds[message.member.guild.id]["emojiIDForRole"][emojiId] = roleid;
+    //} else {
+      //guilds[message.member.guild.id]["emojiForRole"][msgSplit[2]] = roleid;
+    //}
+    //message.reply(emoji + ` Reaction ajoutée avec succès`)
+  //}
+  //if(msgSplit[0] == "pb!removereaction" && msgSplit.length >= 2 && await message.member.hasPermission("ADMINISTRATOR")) {
+    //if(msgSplit[2].startsWith("<:")) {
+      //var emojiId = msgSplit[2].split(":")[2].split(">")[0];
+      //delete guilds[message.member.guild.id]["emojiIDForRole"][emojiId];
+    //} else {
+      //delete guilds[message.member.guild.id]["emojiForRole"][msgSplit[2]];
+    //}
+    //message.reply(emoji + ` Réaction retirée avec succès`)
+  //}
+  //if(msgSplit[0] == 'pb!addmessage' && msgSplit.length >= 2 && await message.member.hasPermission("ADMINISTRATOR")) {
+    //if(guilds[message.member.guild.id]["activechannel"] === "") message.reply("Veuillez activer un channel avec : *setchannel #channel");
+    //guilds[message.member.guild.id]["messages"].push(msgSplit[1]);
+    //try {
+      //message.reply(emoji + " Message ajouté avec succès")
+      //let msg = await bot.channels.get(guilds[message.member.guild.id]["activechannel"]).fetchMessage(msgSplit[1]);
+      //for(let emote in guilds[message.member.guild.id]["emojiIDForRole"]) {
+        //await msg.react(emote);
+      //}
+      //for(let emote in guilds[message.member.guild.id]["emojiForRole"]) {
+        //await msg.react(emote);
+      //}
+    //} catch(error) {
+      //message.reply("Ce message n'a pas été trouvé dans le channel actif");
+    //}
+  //}
+  //if(msgSplit[0] == 'pb!removemessage' && msgSplit.length >= 2 && await message.member.hasPermission("ADMINISTRATOR")) {
+    //let index = guilds[message.member.guild.id]["messages"].indexOf(msgSplit[1]);
+    //if(index > -1) {
+      //guilds[message.member.guild.id]["messages"].splice(index, 1);
+    //}
+    //try {
+      //message.reply(emoji + " Message retiré avec succès")
+      //let msg = await bot.channels.get(guilds[message.member.guild.id]["activechannel"]).fetchMessage(msgSplit[1]);
+      //msg.clearReactions();
+    //} catch(error) {
+      //message.reply("Ce message n'a pas été trouvé dans le channel actif mais a été supprimé de la base de données");
+    //}
+  //}
+  //if(msgSplit[0] == 'pb!setchannel' && msgSplit.length >= 2 && await message.member.hasPermission("ADMINISTRATOR") && msgSplit[1].startsWith("<#")) {
+    //message.reply(emoji + " Channel ajouté avec succès")
+    //guilds[message.member.guild.id]["activechannel"] = msgSplit[1].split("<#")[1].split(">")[0];
+  //}
+  //saveData();
+//});
 
-bot.on('raw', event => {
-  if((event['t'] == 'MESSAGE_REACTION_ADD' || event['t'] == 'MESSAGE_REACTION_REMOVE') && event.d.user_id !== bot.user.id) { 
-    if(event.d.guild_id in guilds) {
-      var guild = bot.guilds.get(event.d.guild_id);
-      var roleid = "";
-      if('emojiForRole' in guilds[event.d.guild_id]) {
-        if(event.d.emoji.name in guilds[event.d.guild_id]['emojiForRole'] && guilds[event.d.guild_id]["messages"].some(val => val == event.d.message_id)) {
-          roleid = guilds[event.d.guild_id]['emojiForRole'][event.d.emoji.name];
+//bot.on('raw', event => {
+  //if((event['t'] == 'MESSAGE_REACTION_ADD' || event['t'] == 'MESSAGE_REACTION_REMOVE') && event.d.user_id !== bot.user.id) { 
+    //if(event.d.guild_id in guilds) {
+      //var guild = bot.guilds.get(event.d.guild_id);
+      //var roleid = "";
+      //if('emojiForRole' in guilds[event.d.guild_id]) {
+        //if(event.d.emoji.name in guilds[event.d.guild_id]['emojiForRole'] && guilds[event.d.guild_id]["messages"].some(val => val == event.d.message_id)) {
+          //roleid = guilds[event.d.guild_id]['emojiForRole'][event.d.emoji.name];
 
-        }
-      } 
-      if('emojiIDForRole' in guilds[event.d.guild_id]) {
-        if(event.d.emoji.id in guilds[event.d.guild_id]['emojiIDForRole'] && guilds[event.d.guild_id]["messages"].some(val => val == event.d.message_id)) {
-          roleid = guilds[event.d.guild_id]['emojiIDForRole'][event.d.emoji.id];
-        }
-      }
+        //}
+      //} 
+      //if('emojiIDForRole' in guilds[event.d.guild_id]) {
+        //if(event.d.emoji.id in guilds[event.d.guild_id]['emojiIDForRole'] && guilds[event.d.guild_id]["messages"].some(val => val == event.d.message_id)) {
+          //roleid = guilds[event.d.guild_id]['emojiIDForRole'][event.d.emoji.id];
+        //}
+      //}
 
-      if(roleid != "") {
-        if(event['t'] == 'MESSAGE_REACTION_ADD') {
-          guild.fetchMember(event.d.user_id).then(member => member.addRole(guild.roles.get(roleid))).catch(console.error);
-        } else if(event['t'] == 'MESSAGE_REACTION_REMOVE') {
-          guild.fetchMember(event.d.user_id).then(member => member.removeRole(guild.roles.get(roleid))).catch(console.error);
-        }
-      }
-    }
+      //if(roleid != "") {
+        //if(event['t'] == 'MESSAGE_REACTION_ADD') {
+          //guild.fetchMember(event.d.user_id).then(member => member.addRole(guild.roles.get(roleid))).catch(console.error);
+        //} else if(event['t'] == 'MESSAGE_REACTION_REMOVE') {
+          //guild.fetchMember(event.d.user_id).then(member => member.removeRole(guild.roles.get(roleid))).catch(console.error);
+        //}
+      //}
+    //}
     
-  }
-});
+  //}
+//});
 
-function saveData() {
-  fs.writeFile('guilds.json', JSON.stringify(guilds), (err) => {
-    if(err !== null) {
-      console.log(err)
-    }
-  });
-}
+//function saveData() {
+  //fs.writeFile('guilds.json', JSON.stringify(guilds), (err) => {
+    //if(err !== null) {
+      //console.log(err)
+    //}
+  //});
+//}
 
-function fsExistsSync(myDir) {
-  try {
-    fs.accessSync(myDir);
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
+//function fsExistsSync(myDir) {
+  //try {
+    //fs.accessSync(myDir);
+    //return true;
+  //} catch (e) {
+    //return false;
+  //}
+//}
 
 function random(min, max) {
     min = Math.ceil(0);
     max = Math.floor(5);
     randum = Math.floor(Math.random() * (max - min +1) + min);
-}
-
-function random2(min, max) {
-    min = Math.ceil(0);
-    max = Math.floor(100);
-    randum2 = Math.floor(Math.random() * (max - min +1) + min);
 }
