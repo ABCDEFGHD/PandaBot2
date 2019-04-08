@@ -84,7 +84,7 @@ bot.on('message', message => {
         if (!message.mentions.users.first()) return message.channel.send(epref + "Entrez un utilisateur.**")
         let truc = message.guild.member(message.mentions.users.first() || message.guild.members.get(arguments[0]));
         message.delete()
-        message.channel.createWebhook(`${truc.user.username}`, `${truc.user.displayAvatarURL}`).then(wb => new Discord.WebhookClient(wb.id, wb.token).send(message.content.split(" ").slice(2).join(" ")));
+        message.channel.createWebhook(`${truc.displayName}`, `${truc.user.displayAvatarURL}`).then(wb => new Discord.WebhookClient(wb.id, wb.token).send(message.content.split(" ").slice(2).join(" ")));
     }
 
     if(message.content.startsWith(prefix + "invite")){
