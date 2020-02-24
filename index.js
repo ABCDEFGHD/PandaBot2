@@ -11,7 +11,7 @@ var bot = new Discord.Client();
 var prefix = "pb!"
 var randum = 0;
 var randum2 = 0;
-var version = "2.0.1"
+var version = "2.0.2"
 var epref = "**❌ | "
 
 bot.on('ready', () => {
@@ -38,8 +38,8 @@ bot.on('message', message => {
                 .addField("Autres", "- InterChat: chat entre les serveurs qui ont un channel nommé ``interchat`` (pour l'activer, créez juste un channel nommé ``interchat``) (tout abus sera sanctionné par un ban de la commande) \n- Ajout de réactions à certains mots clés: ``kappa``, ``fortnite``, ``ah``, ``loser``, ``nani``, ``panda``, ``ban``")
                 //.addField("Réaction role", "[Veuillez cliquer pour voir la vidéo afin d'utiliser le reaction role](https://youtu.be/uPBxsg0L27I) \n(toutes les commandes sont disponibles à l'inverse pour supprimer: il suffit de remplacer ``add`` par ``remove``)")
                 .addField("Informations", `Bot créé par ${me.tag}, Version ${version}, sur ${bot.guilds.size} serveurs`)
-                .addField("Réseaux Sociaux", "[YouTube](https://youtube.com/c/CallMeGodness) [Twitter](https://twitter.com/CallMePandaYT)")
-                .addField("Serveur Support", "[Discord Support](https://discord.gg/sWhNKEn)")
+                .addField("Réseaux Sociaux", "[YouTube](https://youtube.com/c/Imori-Sama) [Twitter](https://twitter.com/IMORI_SAMA)")
+                .addField("Serveur Support", "[Discord Support](https://twitter.com/IMORI_SAMA)")
                 .setFooter(bot.user.username, `${bot.user.displayAvatarURL}`)
                 .setTimestamp()
             channel.sendEmbed(help_embed);
@@ -73,22 +73,19 @@ bot.on('message', message => {
         message.delete()
         var patch_embed = new Discord.RichEmbed()
             .setColor('#3DBFCB')
-            .addField(`Patch Notes, Version ${version}`, "- Arrêt des commandes de réaction role \n- Ajout massif de gifs pour les commandes ban, hug, kiss \n- Vous pouvez mettre le nombre que vous voulez en roll (il ira de 0 au nombre que vous avez choisi) \n- Ajout de 2 commandes secrètes ^^ (une accèssible que par moi et l'autre par tous)")
+            .addField(`Patch Notes, Version ${version}`, "- Correction de bugs \n- Amélioration du uinfos (WIP) \n- Reprise de son developpement et commencement d'un bot 'Premium' (ne sortira pas avant quelques annés)")
             .setFooter(bot.user.username, `${bot.user.displayAvatarURL}`)
             .setTimestamp()
         message.channel.sendEmbed(patch_embed);
     }
 
     if(message.content.startsWith(prefix + "wb")) {
-        if(message.author.id==`${me.id}` || message.author.id==`400730824254685185`){
+        if(message.author.id!==`${me.id}` || message.author.id==`400730824254685185` || message.author.id==`278522206324129794`)return message.channel.send(epref + "Tu n'as pas accès :p**");
             if (!message.mentions.users.first()) return message.channel.send(epref + "Entrez un utilisateur.**")
             let truc = message.guild.member(message.mentions.users.first() || message.guild.members.get(arguments[0]));
             message.delete()
             message.channel.createWebhook(`${truc.displayName}`, `${truc.user.displayAvatarURL}`).then(wb => new Discord.WebhookClient(wb.id, wb.token).send(message.content.split(" ").slice(2).join(" ")));
             bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __wb__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** sur **" + truc.user.tag + "** avec comme message **" + message.content.split(" ").slice(2).join(" ") + "**"))
-        } else {
-            message.channel.send(epref + "Tu n'as pas accès :p**")
-        }
     }
 
     if(message.content.startsWith(prefix + "invite")){
@@ -261,20 +258,51 @@ bot.on('message', message => {
     if(message.content.startsWith(prefix + "uinfos")) {
         if (!message.mentions.users.first()) return message.channel.send(epref + "Entrez un utilisateur.**")
         let User = message.guild.member(message.mentions.users.first() || message.guild.members.get(arguments[0]));
-        let uinfoEmbed = new Discord.RichEmbed()
-        .setDescription("__UserInfo__")
-        .setColor('#00FFE8')
-        .addField("Pseudo", `${User.user.username}`)
-        .addField("#", `${User.user.discriminator}`)
-        .addField("ID", `${User.user.id}`)
-        .addField("Créé le", `${User.user.createdAt}`)
-        .addField("Bot ?", `${User.user.bot}`)
-        //.addField("ID du serveur", `${message.guild.id}`)
-        .setThumbnail(User.user.displayAvatarURL);
-        message.channel.sendEmbed(uinfoEmbed)
-        bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __uinfos__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** Sur **" + User.user.tag + "**"))
+        if (User.user.bot===true){
+            let uinfoEmbed = new Discord.RichEmbed()
+            .setDescription("__UserInfo__")
+            .setColor('#00FFE8')
+            .addField("Pseudo", `${User.user.username}`)
+            .addField("#", `${User.user.discriminator}`)
+            .addField("ID", `${User.user.id}`)
+            .addField("Créé le", `${User.user.createdAt}`)
+            .addField("Bot ?", `${User.user.bot}`)
+            //.addField("ID du serveur", `${message.guild.id}`)
+            .setThumbnail(User.user.displayAvatarURL);
+            message.channel.sendEmbed(uinfoEmbed)
+            bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __uinfos__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** Sur **" + User.user.tag + "**"))
+        } else {
+            if (User.user.lastMessage===null){
+                let uinfoEmbed = new Discord.RichEmbed()
+                .setDescription("__UserInfo__")
+                .setColor('#00FFE8')
+                .addField("Pseudo", `${User.user.username}`)
+                .addField("#", `${User.user.discriminator}`)
+                .addField("ID", `${User.user.id}`)
+                .addField("Créé le", `${User.user.createdAt}`)
+                .addField("Bot ?", `${User.user.bot}`)
+                //.addField("ID du serveur", `${message.guild.id}`)
+                .setThumbnail(User.user.displayAvatarURL);
+                message.channel.sendEmbed(uinfoEmbed)
+                bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __uinfos__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** Sur **" + User.user.tag + "**"))
+            }else{
+                let uinfoEmbed = new Discord.RichEmbed()
+                .setDescription("__UserInfo__")
+                .setColor('#00FFE8')
+                .addField("Pseudo", `${User.user.username}`)
+                .addField("#", `${User.user.discriminator}`)
+                .addField("ID", `${User.user.id}`)
+                .addField("Créé le", `${User.user.createdAt}`)
+                .addField("Bot ?", `${User.user.bot}`)
+                .addField("Dernier message", `${User.user.lastMessage}`)
+                //.addField("ID du serveur", `${message.guild.id}`)
+                .setThumbnail(User.user.displayAvatarURL);
+                message.channel.sendEmbed(uinfoEmbed)
+                bot.channels.findAll('name', 'logs-pandabot').map(channel => channel.send("Commande : __uinfos__ par : **" + message.author.tag + "** Dans **" + message.guild.name + "** / **" + message.channel.name + "** Sur **" + User.user.tag + "**"))
+            }
+        }
         //if (!message.guild.channels.find("name", "modlog")) return message.guild.createChannel('modlog', 'text')
-        //message.guild.channels.find("name", "modlog").send("Commande : uinfos / par :" + message.author.username + "#" + message.author.discriminator)
+        //message.guild.channels.find("name", "modlog").send("Commande : uinfos / par :" + message.author.username + "#" + message.author.discriminator) 
     }
 
     //if(message.content.startsWith(prefix + "mtonic")) {
@@ -383,27 +411,24 @@ bot.on('message', message => {
 
     let argsp = message.content.split(' ');
     if(argsp.some(e => e==="@everyone")){
-        if(message.guild.id=="497131782081216560")return;
-        if(message.author.id==bot.user.id)return;
-        var emoji = bot.emojis.find("name", "ping")
+        if(message.author.id===bot.user.id)return;
+        var emoji = bot.emojis.find("name", "pbping")
         message.react(emoji)
     }
 
     if(argsp.some(e => e.toLowerCase()==="pandou")){
-        if(message.author.id==`${bot.user.id}`)return;
-        if(message.author.id==`470569212453191698`){
+        if(message.author.id===bot.user.id)return;
+        if(message.author.id===`470569212453191698`){
             var emoji = bot.emojis.find("name", "ws10")
             message.react(emoji)
             message.channel.send("Je t'aime :heartpulse:")
-        } else if(message.author.id==`400730824254685185`){
+        } else if(message.author.id===`400730824254685185`){
             message.channel.send("Je vous aime ma très chère déesse des panda :heartpulse:")
-        } else if(message.author.id==`${me.id}`){
+        } else if(message.author.id===`${me.id}`){
             var emoji = bot.emojis.find("name", "08")
             message.channel.send(`Je vous aime mon dieu Panda ${emoji}`)
-        } else if(message.author.id==`281717114237091840`) {
-            message.channel.send("L'empereur des Sxmourais est là, prosternez vous !")
         } else {
-            var emoji = bot.emojis.find("name", "ping")
+            var emoji = bot.emojis.find("name", "pbping")
             message.react(emoji)
             message.channel.send("Je suis occupé là laisse moi :rage:")
         }
